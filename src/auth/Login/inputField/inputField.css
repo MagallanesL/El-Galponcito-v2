@@ -1,0 +1,42 @@
+/* InputField.css */
+
+.input-field {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Efecto al enfocar */
+.input-field:focus {
+  border-color: #ff865e; /* Color cálido */
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(255, 134, 94, 0.3); /* Resalta con un borde luminoso */
+  outline: none;
+}
+
+/* Placeholder con color tenue */
+.input-field::placeholder {
+  color: #ee3309;
+  font-style: italic;
+}
+
+/* Efecto al pasar el mouse */
+.input-field:hover {
+  background-color: #ebe0e0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive: Móvil */
+@media (max-width: 480px) {
+  .input-field {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}

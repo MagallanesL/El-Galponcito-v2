@@ -1,0 +1,12 @@
+
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #503bc9;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px;
+  }
+  

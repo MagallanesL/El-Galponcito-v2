@@ -1,0 +1,25 @@
+/* AuthButton.css */
+
+.auth-button {
+    background-color: #0911ff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-button:hover {
+    background-color: #ff7a5a;
+  }
+  
+  /* Responsive: Móvil */
+  @media (max-width: 480px) {
+    .auth-button {
+      font-size: 1rem;
+    }
+  }
+  

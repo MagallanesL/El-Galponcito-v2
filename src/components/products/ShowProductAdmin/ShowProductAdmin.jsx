@@ -4,7 +4,7 @@ import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firesto
 import { db } from '../../../firebase/firebaseconfig';
 import ProductCategory from './ProductCategory/ProductCategory';
 import SearchBar from './SearchBar/SearchBar';
-import styles from './ShowProductAdmin.module.css';
+
 
 const ShowProductAdmin = () => {
   const [products, setProducts] = useState([]);

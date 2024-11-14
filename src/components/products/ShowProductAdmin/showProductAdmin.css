@@ -1,0 +1,117 @@
+.productsContainer {
+  margin: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-image: url('../../../assets/galponcitolocal.jpg'); /* Ruta a la imagen de fondo */
+  background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+  background-position: center; /* Centra la imagen */
+}
+
+.productsTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); 
+}
+
+.searchContainer {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.397); /* Fondo blanco semitransparente */
+}
+
+.table th {
+  background-color: rgba(244, 244, 244, 0.7); /* Fondo de encabezado más claro */
+  color: #555;
+}
+
+.table .editButton,
+.table .deleteButton {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.table .editButton {
+  background-color: #f0ad4e;
+  margin-right: 5px; /* Agrega un pequeño margen entre los botones */
+}
+
+.table .deleteButton {
+  background-color: #d9534f;
+}
+
+.table .editButton:hover,
+.table .deleteButton:hover {
+  background-color: #e99c42;
+}
+
+.table .deleteButton:hover {
+  background-color: #c9302c;
+}
+
+
+.productCategory {
+  margin-top: 20px;
+}
+
+/* Estilos Responsivos */
+@media screen and (max-width: 768px) {
+  .productsContainer {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .productsTitle {
+    font-size: 20px;
+  }
+
+  .table th, .table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .searchContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .productsContainer {
+    margin: 5px;
+    padding: 10px;
+  }
+
+  .productsTitle {
+    font-size: 18px;
+  }
+
+  .table th, .table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .searchContainer {
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

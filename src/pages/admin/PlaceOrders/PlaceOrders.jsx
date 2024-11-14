@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
 import { Accordion, Card, Button } from 'react-bootstrap';
+import DashBoardAdmin from '../dashboard/DashboardAdmin';
 
 const orderCollection = collection(db, 'pedidos');
 
@@ -58,15 +59,16 @@ const PlaceOrders = () => {
 
   return (
     <div className="container mt-4">
-      <h3>Pedidos {currentDate}</h3> {/* Mostrar el título con la fecha */}
+      <DashBoardAdmin/>
+      <h3>Pedidos {currentDate}</h3> 
       <Accordion defaultActiveKey="0">
     {filteredOrders.map((order, index) => (
       <Card key={order.id}>
         <Accordion.Item eventKey={String(index)}>
-          <Accordion.Header> {/* Cambia Accordion.Toggle a Accordion.Header */}
+          <Accordion.Header> 
             Pedido de {order.name} - Total: ${order.total}
           </Accordion.Header>
-          <Accordion.Body> {/* Cambia Accordion.Collapse a Accordion.Body */}
+          <Accordion.Body> 
             <p><strong>Teléfono:</strong> {order.phone}</p>
             <p><strong>Dirección:</strong> {order.address}</p>
             <h5>Items:</h5>

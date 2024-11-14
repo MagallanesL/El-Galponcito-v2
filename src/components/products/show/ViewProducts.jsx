@@ -3,6 +3,7 @@ import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
 import { CartContext } from '../../../context/dataContext';
 import './ViewProducts.css';
+import Swal from 'sweetalert2';
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -64,7 +65,36 @@ const ViewProducts = () => {
       date: new Date(),
     });
 
-    alert('Pedido confirmado');
+    Swal.fire({
+      title: 'Pedido Enviado',
+      text: 'Pedido enviado a la cocina!',
+      icon: 'success',
+      confirmButtonText: 'Cool'
+    });
+  };
+
+  // Agregar un producto al carrito con un mensaje de éxito aleatorio
+  const handleAddToCart = (product) => {
+    const randomMessages = [
+      `¡Excelente elección! ${product.name} agregado al carrito.`,
+      `¡Genial! ${product.name} está en tu carrito.`,
+      `¡Buen gusto! Has agregado ${product.name}.`,
+      `¡Perfecto! ${product.name} está listo para ir al carrito.`,
+      `¡Excelente! El ${product.name} ahora está en tu carrito.`
+    ];
+
+    const randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+
+    // Agregar al carrito
+    addToCart(product);
+
+    // Mostrar el Swal con el mensaje aleatorio
+    Swal.fire({
+      title: 'Producto agregado',
+      text: randomMessage,
+      icon: 'success',
+      confirmButtonText: 'Continuar'
+    });
   };
 
   return (
@@ -99,7 +129,7 @@ const ViewProducts = () => {
               <p>{product.description}</p>
               <p className="productPrice">${product.price}</p>
               <div className="productButtons">
-                <button onClick={() => addToCart(product)} className="addToCartButton">
+                <button onClick={() => handleAddToCart(product)} className="addToCartButton">
                   Agregar al carrito
                 </button>
               </div>

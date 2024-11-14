@@ -1,10 +1,9 @@
-// pages/ShowProductAdmin.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
-import ProductCategory from './ProductCategory/ProductCategory';
+import Swal from 'sweetalert2';
 import SearchBar from './SearchBar/SearchBar';
-
+import './ShowProductAdmin.css'; // Asegúrate de tener los estilos aplicados
 
 const ShowProductAdmin = () => {
   const [products, setProducts] = useState([]);
@@ -25,7 +24,7 @@ const ShowProductAdmin = () => {
 
   const handleEditClick = (product) => {
     setEditProductId(product.id);
-    setEditedProduct(product);
+    setEditedProduct({ ...product });
   };
 
   const handleInputChange = (e) => {
@@ -42,10 +41,31 @@ const ShowProductAdmin = () => {
     setEditProductId(null);
   };
 
-  const handleDelete = async (id) => {
-    const productDoc = doc(db, 'productos', id);
-    await deleteDoc(productDoc);
-    setProducts(products.filter((product) => product.id !== id));
+  // Modificación de handleDelete para usar SweetAlert2
+  const handleDelete = (product) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Estás a punto de eliminar el producto: ${product.name}. Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true, // Reversa el orden de los botones
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Eliminar el producto de Firebase
+        const productDoc = doc(db, 'productos', product.id);
+        deleteDoc(productDoc).then(() => {
+          // Eliminar el producto de la lista local después de la eliminación en Firebase
+          setProducts(products.filter((p) => p.id !== product.id));
+          Swal.fire(
+            'Eliminado!',
+            `El producto ${product.name} ha sido eliminado.`,
+            'success'
+          );
+        });
+      }
+    });
   };
 
   // Filtrar productos según la categoría y el término de búsqueda
@@ -53,40 +73,100 @@ const ShowProductAdmin = () => {
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const pizzas = filteredProducts.filter(product => product.category === 'pizza');
-  const sandwiches = filteredProducts.filter(product => product.category === 'sandwich');
 
   return (
-    <div className={styles.productsContainer}>
-      <h2 className={styles.productsTitle}>Lista de Productos</h2>
+    <div className="productsContainer">
+      <h2 className="productsTitle">Lista de Productos</h2>
 
       {/* Barra de búsqueda */}
       <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-      {/* Categorías de productos */}
-      <ProductCategory
-        title="Pizzas"
-        products={pizzas}
-        editProductId={editProductId}
-        editedProduct={editedProduct}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDelete}
-        onInputChange={handleInputChange}
-        onSaveClick={handleSave}
-        onCancelClick={() => setEditProductId(null)}
-      />
-
-      <ProductCategory
-        title="Sandwich"
-        products={sandwiches}
-        editProductId={editProductId}
-        editedProduct={editedProduct}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDelete}
-        onInputChange={handleInputChange}
-        onSaveClick={handleSave}
-        onCancelClick={() => setEditProductId(null)}
-      />
+      {/* Tabla de productos */}
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.map((product) => (
+            <tr key={product.id}>
+              <td>
+                {editProductId === product.id ? (
+                  <input
+                    type="text"
+                    name="name"
+                    value={editedProduct.name || ''}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  product.name
+                )}
+              </td>
+              <td>
+                {editProductId === product.id ? (
+                  <input
+                    type="text"
+                    name="category"
+                    value={editedProduct.category || ''}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  product.category
+                )}
+              </td>
+              <td>
+                {editProductId === product.id ? (
+                  <input
+                    type="number"
+                    name="price"
+                    value={editedProduct.price || ''}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  `$${product.price}`
+                )}
+              </td>
+              <td>
+                {editProductId === product.id ? (
+                  <>
+                    <button 
+                      className="saveButton" 
+                      onClick={() => handleSave(product.id)}
+                    >
+                      Guardar
+                    </button>
+                    <button 
+                      className="cancelButton" 
+                      onClick={() => setEditProductId(null)}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      className="editButton" 
+                      onClick={() => handleEditClick(product)}
+                    >
+                      Editar
+                    </button>
+                    <button 
+                      className="deleteButton" 
+                      onClick={() => handleDelete(product)}
+                    >
+                      Eliminar
+                    </button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

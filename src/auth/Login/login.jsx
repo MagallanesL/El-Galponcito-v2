@@ -3,11 +3,11 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 import { useNavigate } from 'react-router-dom';
 import { db } from "../../firebase/firebaseconfig";
 import { doc, setDoc } from "firebase/firestore";
-import InputField from './inputField/InputField';  
-import ErrorMessage from './errormessage/ErrorMessage'; 
-import AuthButton from './authButton/AuthButton'; 
-import ToggleButton from './toggleButton/ToggleButton'; 
-import './css/style.css'
+import InputField from './inputField/InputField';
+import ErrorMessage from './errormessage/ErrorMessage';
+import AuthButton from './authButton/AuthButton';
+import ToggleButton from './toggleButton/ToggleButton';
+import styles from './css/Login.module.css';
 
 const auth = getAuth();
 
@@ -57,86 +57,32 @@ const Login = () => {
         createdAt: new Date(),
       });
       setError(null);
-      navigate('/dashboard');
+      navigate('/clients');
     } catch (err) {
       setError('Error al registrarse, intente nuevamente.');
     }
   };
 
-  // Función para manejar el "Enter"
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Evita el comportamiento por defecto del Enter
-      isRegister ? handleRegister() : handleLogin(); // Llama a la función correspondiente
-    }
-  };
-
   return (
-    <div className="login-container">
-      <div className="login-form">
+    <div className={styles.fondoContainer}>
+      <div className={styles.loginForm}>
         <h1>{isRegister ? 'Registro' : 'Iniciar Sesión'}</h1>
-        <ErrorMessage error={error} className="error-message" />
+        <ErrorMessage error={error} className={styles.errorMessage} />
         
         {isRegister && (
           <>
-            <InputField
-              name="nombre"
-              value={nombre}
-              onChange={handleInputChange}
-              placeholder="Nombre o Apodo"
-              className="input-field"
-              onKeyDown={handleKeyDown} // Agrega el evento onKeyDown
-            />
-            <InputField
-              name="telefono"
-              value={telefono}
-              onChange={handleInputChange}
-              placeholder="Número de Teléfono"
-              className="input-field"
-              onKeyDown={handleKeyDown} // Agrega el evento onKeyDown
-            />
-            <InputField
-              name="direccion"
-              value={direccion}
-              onChange={handleInputChange}
-              placeholder="Dirección"
-              className="input-field"
-              onKeyDown={handleKeyDown} // Agrega el evento onKeyDown
-            />
+            <InputField name="nombre" value={nombre} onChange={handleInputChange} placeholder="Nombre o Apodo" className={styles.inputField} />
+            <InputField name="telefono" value={telefono} onChange={handleInputChange} placeholder="Número de Teléfono" className={styles.inputField} />
+            <InputField name="direccion" value={direccion} onChange={handleInputChange} placeholder="Dirección" className={styles.inputField} />
           </>
         )}
         
-        <InputField
-          name="email"
-          value={email}
-          onChange={handleInputChange}
-          placeholder="Correo"
-          type="email"
-          className="input-field"
-          onKeyDown={handleKeyDown} // Agrega el evento onKeyDown
-        />
+        <InputField name="email" value={email} onChange={handleInputChange} placeholder="Correo" type="email" className={styles.inputField} />
+        <InputField name="password" value={password} onChange={handleInputChange} placeholder="Contraseña" type="password" className={styles.inputField} />
         
-        <InputField
-          name="password"
-          value={password}
-          onChange={handleInputChange}
-          placeholder="Contraseña"
-          type="password"
-          className="input-field"
-          onKeyDown={handleKeyDown} // Agrega el evento onKeyDown
-        />
+        <AuthButton onClick={isRegister ? handleRegister : handleLogin} text={isRegister ? 'Registrarse' : 'Iniciar Sesión'} className={styles.authButton} />
         
-        <AuthButton
-          onClick={isRegister ? handleRegister : handleLogin}
-          text={isRegister ? 'Registrarse' : 'Iniciar Sesión'}
-          className="auth-button"
-        />
-        
-        <ToggleButton
-          onClick={() => setIsRegister(!isRegister)}
-          text={isRegister ? '¿Ya tienes cuenta? ¡Inicia sesión!' : '¿No tienes cuenta? Regístrate gratis!'}
-          className="toggle-button"
-        />
+        <ToggleButton onClick={() => setIsRegister(!isRegister)} text={isRegister ? '¿Ya tienes cuenta? ¡Inicia sesión!' : '¿No tienes cuenta? Regístrate gratis!'} className={styles.toggleButton} />
       </div>
     </div>
   );

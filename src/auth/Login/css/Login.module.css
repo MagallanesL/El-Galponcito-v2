@@ -1,0 +1,114 @@
+/* Fondo del cuerpo */
+.fondoContainer {
+  background-image: url('../../../assets/cajavacia.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex; /* Agrega flex para centrar */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+/* Contenedor principal */
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: linear-gradient(to right, rgba(255, 235, 205, 0.95), rgba(255, 214, 170, 0.95));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+
+/* Formulario de login */
+.loginForm {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 50px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  margin-right: 50px;
+  border-radius: 20px;
+
+  
+  box-shadow: 0 30px 30px rgba(0, 0, 0, 0.15), 
+              0 30px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover para resaltar sombra */
+.loginForm:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2), 
+              0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Título del formulario */
+.loginForm h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #D46A6A;
+  margin-bottom: 25px;
+  font-family: 'Playfair Display', serif; /* Tipografía elegante */
+}
+
+/* Campos de entrada */
+.inputField {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Botón de autenticación */
+.authButton {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #D46A6A;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.authButton:hover {
+  background-color: #b04e4e;
+}
+
+/* Botón de cambio de registro */
+.toggleButton {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #5A5A5A;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Mensajes de error */
+.errorMessage {
+  color: #D46A6A;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+/* Responsive: Móvil */
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 20px;
+  }
+
+  .loginForm {
+    padding: 30px;
+    margin-right: 0;
+  }
+}

@@ -84,6 +84,7 @@ const CreateNew = () => {
               <option value="">Seleccionar categoría</option>
               <option value="pizza">Pizza</option>
               <option value="sandwich">Sándwich</option>
+              <option value="1/2 y 1/2">Media y Media</option>
             </select>
           </div>
           <button type="submit" className="createButton">Crear Producto</button>

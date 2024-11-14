@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseconfig";
-import './CreateNew.css';
+import './createnew.css';
 import DashBoardAdmin from '../../../pages/admin/dashboard/DashboardAdmin'
 
 const CreateNew = () => {

@@ -88,6 +88,7 @@ const ShowProductAdmin = () => {
             <th>Nombre</th>
             <th>Categoría</th>
             <th>Precio</th>
+            <th>Ingredientes</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -104,6 +105,18 @@ const ShowProductAdmin = () => {
                   />
                 ) : (
                   product.name
+                )}
+              </td>
+              <td>
+                {editProductId === product.id ? (
+                  <input
+                    type="text"
+                    name="Ingredientes"
+                    value={editedProduct.description || ''}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  product.description
                 )}
               </td>
               <td>

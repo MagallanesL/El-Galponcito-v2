@@ -1,67 +1,114 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { CartContext } from '../../../context/dataContext';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../../firebase/firebaseconfig'; 
+import { useEffect, useState, useContext } from "react";
+import { db } from "../../../firebase/firebaseconfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { AuthContext } from "../../../context/authcontext";
+import { CartContext } from "../../../context/dataContext"; 
+import './cartcontent.css';
 
 const CartContent = () => {
-  const { cartItems } = useContext(CartContext);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const { user } = useContext(AuthContext);
+  const { cartItems } = useContext(CartContext);  
+  const [userData, setUserData] = useState(null);
   const [total, setTotal] = useState(0);
+  const [deliveryOption, setDeliveryOption] = useState("retirar");
+  const [address, setAddress] = useState("");
 
-  const ordersCollection = collection(db, 'pedidos');
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user && user.uid) {
+        const userDocRef = doc(db, "Usuarios", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        }
+      }
+    };
+    fetchUserData();
+  }, [user]);
 
-  // Calcular el total del carrito cuando cartItems cambia
+  // Calcular el total
   useEffect(() => {
     const calculateTotal = () => {
-      const totalAmount = cartItems.reduce((acc, item) => acc + Number(item.price), 0);
+      const totalAmount = cartItems.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
       setTotal(totalAmount);
     };
     calculateTotal();
   }, [cartItems]);
-  
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const items = cartItems.map(item => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity || 1, 
-    }));
 
-    // Enviar la orden a Firestore
-    await addDoc(ordersCollection, {
-      name: 'juanitos',
-      email,
-      phone,
-      address,
-      items,
-      total,
-      date: new Date(),
+    // Crear el objeto con la información del pedido
+    const order = {
+      userId: user.uid,
+      userName: userData.nombre,
+      userEmail: userData.email,
+      userPhone: userData.telefono,
+      items: cartItems,
+      totalAmount: total,
+      deliveryOption: deliveryOption,
+      address: address,
+      timestamp: new Date().toISOString()
+    };
+
+    // Enviar el pedido a Firebase
+    const orderRef = doc(db, "Pedidos", user.uid + "_" + new Date().toISOString());
+    setDoc(orderRef, order).then(() => {
+      console.log("¡Pedido enviado con éxito! 🎉");
+    }).catch((error) => {
+      console.error("Oops, algo salió mal al enviar el pedido: ", error);
     });
-
-    alert('Pedido confirmado');
   };
 
+  if (!userData) return <p>Estamos cargando tus datos... ¡un momento! ⏳</p>;
+
   return (
-    <div>
-      <h2>Carrito de Compras</h2>
-      {cartItems.length === 0 ? (
-        <p>El carrito está vacío</p>
-      ) : (
-        <ul>
-          {cartItems.map((item) => (
-            <li key={item.id}>
-              {item.name} - ${item.price}
-            </li>
-          ))}
-        </ul>
-      )}
-      <p>Total: ${total}</p>
-      <button onClick={handleSubmit}>Confirmar</button>
+    <div className="cartContainer">
+      <div className="cartForm">
+        <h2>¡Listo para tu pedido {userData.nombre}? 🛍️</h2>
+       
+        <div className="cartDetails">
+          <h3 className="info-degustar">¡Veamos con que te vas a degustar hoy!</h3>
+          {cartItems.length === 0 ? (
+            <p>Tu carrito está vacío... ¡Agrega productos para empezar! 🌟</p>
+          ) : (
+            <ul>
+              {cartItems.map((item) => (
+                <li key={item.id}>
+                  {item.name} - ${item.price} x {item.quantity}
+                </li>
+              ))}
+              <p><strong>Total: </strong>${total}</p>
+            </ul>
+          )}
+        </div>
+        <div className="deliveryOption">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>¿Cómo quieres recibirlo?</label>
+              <select
+                value={deliveryOption}
+                onChange={(e) => setDeliveryOption(e.target.value)}
+              >
+                <option value="retirar">¡Voy a retirarlo en el lugar! 🎉</option>
+                <option value="enviar">Envío a domicilio, ¡sí por favor! 🚚</option>
+              </select>
+            </div>
+            {deliveryOption === "enviar" && (
+              <div>
+                <label>Dirección de envío</label>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+            )}
+            <button type="submit">¡Confirmar mi pedido! 🎯</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { db } from "../../firebase/firebaseconfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import InputField from './inputField/InputField';
 import ErrorMessage from './errormessage/ErrorMessage';
 import AuthButton from './authButton/AuthButton';
 import ToggleButton from './toggleButton/ToggleButton';
 import styles from './css/Login.module.css';
+import { AuthContext } from "../../context/authcontext";
 
 const auth = getAuth();
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,11 +36,34 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const userEmail = userCredential.user.email;
-      setError(null);
-      if (userEmail === 'elgalponcito@elgalponcito.com') {
-        navigate('/admin');
+
+      // Obtener datos del usuario desde Firestore utilizando su uid
+      const userRef = doc(db, "Usuarios", userCredential.user.uid); 
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userFromDb = userSnap.data();
+        const fullUserData = {
+          uid: userCredential.user.uid,
+          email: userEmail,
+          nombre: userFromDb.nombre || "Usuario", // Si no hay nombre, asigna un valor por defecto
+          telefono: userFromDb.telefono || '',
+          direccion: userFromDb.direccion || '',
+        };
+
+        // Actualiza el estado global de usuario
+        login(fullUserData);
+        localStorage.setItem("user", JSON.stringify(fullUserData)); // Guarda en localStorage
+
+        setError(null);
+        // Navegar dependiendo del email del usuario
+        if (userEmail === 'elgalponcito@elgalponcito.com') {
+          navigate('/admin');
+        } else {
+          navigate('/clients');
+        }
       } else {
-        navigate('/clients');
+        setError('El usuario no existe en la colección Usuarios.');
       }
     } catch (err) {
       setError('Error al iniciar sesión, error en el usuario o contraseña');
@@ -46,9 +71,16 @@ const Login = () => {
   };
 
   const handleRegister = async () => {
+    if (!nombre || !telefono || !direccion || !email || !password) {
+      setError("Por favor completa todos los campos.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      // Guardar datos del nuevo usuario en la colección "Usuarios"
       await setDoc(doc(db, "Usuarios", user.uid), {
         email: user.email,
         nombre,
@@ -56,6 +88,15 @@ const Login = () => {
         direccion,
         createdAt: new Date(),
       });
+
+      // Actualizar el estado global después de registrarse
+      login({
+        email: user.email,
+        nombre,
+        telefono,
+        direccion,
+      });
+
       setError(null);
       navigate('/clients');
     } catch (err) {

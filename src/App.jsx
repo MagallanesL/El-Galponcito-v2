@@ -4,35 +4,72 @@ import CartContent from './components/cart/cartContent/cartContent';
 import CreateNew from './components/products/create/createNew';
 import Admin from './pages/admin/dashboard/DashboardAdmin';
 import ProductCreated from './pages/admin/ProductsCreated/productsCreated';
-import ZoneCobertura from './pages/admin/Zone/zoneCobert'
+import ZoneCobertura from './pages/admin/Zone/zoneCobert';
 import PlaceOrders from './pages/admin/PlaceOrders/PlaceOrders';
 import Reports from './pages/admin/reports/reports';
 import ViewClients from './pages/client/ViewClients';
 import { CartProvider } from './context/dataContext';
+import { AuthProvider } from './context/authcontext';
+import ProtectedRoute from './routes/protectedRoute';
 
 function App() {
-  // Definimos los "future flags" de React Router
-  const future = {
-    v7_startTransition: true,
-    v7_relativeSplatPath: true,
-  };
+  const adminEmail = "elgalponcito@elgalponcito.com";  // Podrías obtener esto desde el contexto de autenticación.
 
   return (
-    <CartProvider>
-      <Router future={future}>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path="/clients" element={<ViewClients />} />
-          <Route path='/cart' element={<CartContent />} />
-          <Route path="/newproduct" element={<CreateNew />} />
-          <Route path="/productcreated" element={<ProductCreated />} />
-          <Route path="/zona" element={<ZoneCobertura />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/placeorders" element={<PlaceOrders />} />
-          <Route path="/reports" element={<Reports />} />
-        </Routes>  
-      </Router>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Routes>
+            {/* Ruta pública */}
+            <Route path='/' element={<Login />} />
+
+            {/* Rutas protegidas para usuarios autenticados */}
+            <Route path="/clients" element={
+              <ProtectedRoute>
+                <ViewClients />
+              </ProtectedRoute>
+            } />
+            <Route path='/cart' element={
+              <ProtectedRoute>
+                <CartContent />
+              </ProtectedRoute>
+            } />
+
+            {/* Rutas protegidas solo para el admin */}
+            <Route path="/newproduct" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <CreateNew />
+              </ProtectedRoute>
+            } />
+            <Route path="/productcreated" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <ProductCreated />
+              </ProtectedRoute>
+            } />
+            <Route path="/zona" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <ZoneCobertura />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <Admin />
+              </ProtectedRoute>
+            } />
+            <Route path="/placeorders" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <PlaceOrders />
+              </ProtectedRoute>
+            } />
+            <Route path="/reports" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <Reports />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

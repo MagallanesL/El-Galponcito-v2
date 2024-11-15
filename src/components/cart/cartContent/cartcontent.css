@@ -1,0 +1,131 @@
+/* Fondo del cuerpo */
+.cartContainer {
+  background-image: url('../../../assets/cajavacia.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor principal */
+.cartForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: linear-gradient(to right, rgba(255, 235, 205, 0.95), rgba(255, 214, 170, 0.95));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Título del formulario */
+.cartForm h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #D46A6A;
+  margin-bottom: 25px;
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
+
+/* Nombre y precio del producto */
+.cartDetails ul li {
+  font-size: 1.2rem;
+  color: #444;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.cartDetails ul li:hover {
+  background-color: #f9f9f9;
+  transform: scale(1.02);
+}
+
+.cartDetails ul li span {
+  font-weight: 500;
+  color: #D46A6A;
+}
+
+/* Total */
+.cartDetails p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #D46A6A;
+  margin-top: 20px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Botón de confirmar */
+.cartForm button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #D46A6A;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.cartForm button:hover {
+  background-color: #b04e4e;
+}
+
+.info-degustar{
+  text-align: center;
+}
+/* Campos de entrada */
+.cartForm input,
+.cartForm select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Mensajes */
+.cartForm p {
+  font-size: 1.2rem;
+  color: #5A5A5A;
+  text-align: center;
+}
+
+/* Lista de productos */
+.cartForm ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Responsive: Móvil */
+@media (max-width: 480px) {
+  .cartForm {
+    padding: 20px;
+  }
+
+  .cartForm h2 {
+    font-size: 1.8rem;
+  }
+
+  .cartDetails p {
+    font-size: 1.2rem;
+  }
+}

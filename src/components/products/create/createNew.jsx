@@ -8,26 +8,24 @@ const CreateNew = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("");
 
   const productsCollection = collection(db, 'productos');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validación de campos
-    if (!name || !description || !price || !quantity || !category) {
+    if (!name || !description || !price || !category) {
       alert("Por favor, completa todos los campos antes de enviar.");
       return;
     }
 
     // Agregar a Firestore si todos los campos están completos
-    await addDoc(productsCollection, { 
-      name, 
-      description, 
-      price: Number(price),  
-      quantity: Number(quantity),
+    await addDoc(productsCollection, {
+      name,
+      description,
+      price: Number(price),
       category
     });
 
@@ -35,63 +33,73 @@ const CreateNew = () => {
     setName("");
     setDescription("");
     setPrice("");
-    setQuantity("");
     setCategory("");
   };
-
+  console.log({
+    name,
+    description,
+    price,
+    category,
+  });
+  
   return (
-     <>
-     <DashBoardAdmin/>
-    <div className="createNewComponentWrapper">
-      <div className="createNewContainer">
-        <h2 className="createNewTitle">¡Cocinar lo nuevo!</h2>
-        <form className="createNewForm" onSubmit={handleSubmit}>
-          <div className="formGroup">
-            <label>Nombre:</label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
-              required 
+    <>
+      <DashBoardAdmin />
+      <div className="createNewComponentWrapper">
+        <div className="createNewContainer">
+          <h2 className="createNewTitle">¡Cocinar lo nuevo!</h2>
+          <form className="createNewForm" onSubmit={handleSubmit}>
+            <div className="formGroup">
+              <label>Nombre:</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
               />
-          </div>
-          <div className="formGroup">
-            <label>Ingredientes:</label>
-            <input 
-              type="text" 
-              value={description} 
-              onChange={(e) => setDescription(e.target.value)} 
-              required 
+            </div>
+            <div className="formGroup">
+              <label>Ingredientes:</label>
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
               />
-          </div>
-          <div className="formGroup">
-            <label>Precio:</label>
-            <input 
-              type="number" 
-              value={price} 
-              onChange={(e) => setPrice(e.target.value)} 
-              required 
+            </div>
+            <div className="formGroup">
+              <label>Precio:</label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
               />
-          </div>
-      
-          <div className="formGroup">
-            <label>Categoría:</label>
-            <select 
-              value={category} 
-              onChange={(e) => setCategory(e.target.value)} 
-              required
+            </div>
+
+            <div className="formGroup">
+              <label>Categoría:</label>
+              <select
+                value={category}
+                onChange={(e) => {
+                  const selectedValue = e.target.value.trim();
+                  console.log("Valor seleccionado:", selectedValue); // Depuración
+                  setCategory(selectedValue);
+                }}
+                required
               >
-              <option value="">Seleccionar categoría</option>
-              <option value="pizza">Pizza</option>
-              <option value="sandwich">Sándwich</option>
-              <option value="1/2 y 1/2">Media y Media</option>
-            </select>
-          </div>
-          <button type="submit" className="createButton">Crear Producto</button>
-        </form>
+                <option value="">Seleccionar categoría</option>
+                <option value="pizza">Pizza</option>
+                <option value="sandwich">Sándwich</option>
+                <option value="1/2 y 1/2">Media y Media</option>
+              </select>
+
+            </div>
+            <button type="submit" className="createButton">Crear Producto</button>
+          </form>
+        </div>
       </div>
-    </div>
-</>
+    </>
   );
 };
 

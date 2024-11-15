@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
 import { CartContext } from '../../../context/dataContext';  // Asegúrate de que sea el contexto correcto
-import './ViewProducts.css';
+import './viewproducts.css';
 import Swal from 'sweetalert2';
 
 const ViewProducts = () => {

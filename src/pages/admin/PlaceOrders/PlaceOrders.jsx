@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, updateDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
-import { Accordion, Card, Button } from 'react-bootstrap';
+import { Accordion, Card, DropdownButton, Dropdown } from 'react-bootstrap';
 import DashBoardAdmin from '../dashboard/DashboardAdmin';
+import './placeorders.css';
 
-const orderCollection = collection(db, 'pedidos');
-
+const orderCollection = collection(db, 'Pedidos');
 const PlaceOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [currentDate, setCurrentDate] = useState('');
 
-  // Obtener la fecha actual en formato 'dd/mm/yyyy'
   const getCurrentDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -20,70 +19,140 @@ const PlaceOrders = () => {
     setCurrentDate(`${day}/${month}/${year}`);
   };
 
-  // Obtener los pedidos
   const getOrdersPlace = async () => {
-    const data = await getDocs(orderCollection);
-    const ordersData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    setOrders(ordersData);
+    try {
+      const orderCollectionRef = collection(db, "Pedidos");
+      const data = await getDocs(orderCollectionRef);
+      const ordersData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-    // Filtrar pedidos por fecha y horario
-    const filtered = ordersData.filter((order) => {
-      const orderTimestamp = order.date;
+      console.log("Datos obtenidos de Firestore:", ordersData);
+      setOrders(ordersData);
 
-      // Comprobar si el campo 'date' existe y tiene un 'seconds' (timestamp de Firestore)
-      if (orderTimestamp && orderTimestamp.seconds) {
-        const orderDate = new Date(orderTimestamp.seconds * 1000); // Convertir timestamp a fecha
-        const orderHour = orderDate.getHours();
-        const orderDay = orderDate.toLocaleDateString(); // Obtener solo la fecha (sin hora)
+      const filtered = ordersData.filter((order) => {
+        const orderTimestamp = order.timestamp;
 
-        // El negocio abre de 6 p.m. a 2 a.m. (de la noche, lo cual incluye el cambio de fecha)
-        const isInBusinessHours = (orderHour >= 18 || orderHour < 2); // 18 es 6 p.m., 2 es 2 a.m.
+        if (orderTimestamp) {
+          const orderDate = new Date(orderTimestamp);
+          if (isNaN(orderDate)) {
+            console.error(`Timestamp inválido para el pedido ${order.id}`);
+            return false;
+          }
+          const orderHour = orderDate.getHours();
+          const orderDay = orderDate.toLocaleDateString();
 
-        // Solo mostrar los pedidos del día y dentro del horario de apertura
-        const isToday = orderDay === new Date().toLocaleDateString(); // Verificar si el pedido es del día de hoy
+          const isInBusinessHours = (orderHour >= 13 && orderHour <= 23) || orderHour < 2;
+          const isToday = orderDay === new Date().toLocaleDateString();
 
-        return isToday && isInBusinessHours;
-      }
+          return isToday && isInBusinessHours;
+        }
 
-      // Si no hay timestamp, no filtramos por fecha y horario
-      return false;
-    });
+        return false;
+      });
 
-    setFilteredOrders(filtered);
+      const ordersWithNumber = filtered.map((order, index) => ({
+        ...order,
+        orderNumber: index + 1,
+      }));
+
+      const sortedOrders = ordersWithNumber.sort((a, b) => {
+        const orderPriority = { 'Pendiente': 0, 'Cocinando': 1, 'Enviado': 2 };
+        return orderPriority[a.status] - orderPriority[b.status];
+      });
+
+      setFilteredOrders(sortedOrders);
+
+    } catch (error) {
+      console.error("Error al obtener los pedidos:", error);
+    }
   };
 
   useEffect(() => {
-    getCurrentDate(); // Obtener la fecha actual
-    getOrdersPlace(); // Obtener y filtrar los pedidos
+    getCurrentDate();
+    getOrdersPlace();
   }, []);
+
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const orderDocRef = doc(db, 'Pedidos', orderId);
+      await updateDoc(orderDocRef, { status: newStatus });
+      console.log(`Estado del pedido ${orderId} actualizado a: ${newStatus}`);
+    } catch (error) {
+      console.error("Error al actualizar el estado del pedido:", error);
+    }
+  };
+
+  const handleStatusChange = (orderId, newStatus) => {
+    setFilteredOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
+    );
+    updateOrderStatus(orderId, newStatus);
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Pendiente':
+        return 'btn-warning';
+      case 'Cocinando':
+        return 'btn-info';
+      case 'Enviado':
+        return 'btn-success';
+      default:
+        return 'btn-secondary';
+    }
+  };
 
   return (
     <div className="container mt-4">
-      <DashBoardAdmin/>
-      <h3>Pedidos {currentDate}</h3> 
+      <DashBoardAdmin />
+      <h3>Pedidos {currentDate}</h3>
       <Accordion defaultActiveKey="0">
-    {filteredOrders.map((order, index) => (
-      <Card key={order.id}>
-        <Accordion.Item eventKey={String(index)}>
-          <Accordion.Header> 
-            Pedido de {order.name} - Total: ${order.total}
-          </Accordion.Header>
-          <Accordion.Body> 
-            <p><strong>Teléfono:</strong> {order.phone}</p>
-            <p><strong>Dirección:</strong> {order.address}</p>
-            <h5>Items:</h5>
-            <ul>
-              {order.items?.map((item, idx) => (
-                <li key={item.id}>
-                  {item.name} - {item.quantity} unidad{item.quantity > 1 ? 'es' : ''}
-                </li>
-              ))}
-            </ul>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Card>
-    ))}
-  </Accordion>
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order, index) => (
+            <Card key={order.id}>
+              <Accordion.Item eventKey={String(index)}>
+                <Accordion.Header>
+                  {/* Aquí utilizamos directamente el Dropdown y evitamos el botón extra */}
+                  <Dropdown>
+                    <Dropdown.Toggle variant="secondary" id={`dropdown-status-${order.id}`} className={`mr-2 ${getStatusClass(order.status)}`}>
+                      {order.status || 'Pendiente'}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item eventKey="Pendiente" onClick={() => handleStatusChange(order.id, 'Pendiente')}>
+                        Pendiente
+                      </Dropdown.Item>
+                      <Dropdown.Item eventKey="Cocinando" onClick={() => handleStatusChange(order.id, 'Cocinando')}>
+                        Cocinando
+                      </Dropdown.Item>
+                      <Dropdown.Item eventKey="Enviado" onClick={() => handleStatusChange(order.id, 'Enviado')}>
+                        Enviado
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  {order.orderNumber} # Pedido de - <strong>{order.userName}</strong> - Total: ${order.totalAmount}
+                </Accordion.Header>
+                <Accordion.Body>
+                  <p><strong>Teléfono:</strong> {order.userPhone}</p>
+                  <p><strong>Dirección:</strong> {order.address ? order.address : 'Retira en local'}</p>
+
+                  <h5>Productos:</h5>
+                  <ul>
+                    {order.items?.map((item, idx) => (
+                      <li key={idx}>
+                        {item.name} - {item.quantity} unidad{item.quantity > 1 ? 'es' : ''}
+                      </li>
+                    ))}
+                  </ul>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Card>
+          ))
+        ) : (
+          <p>No hay pedidos para mostrar en este momento.</p>
+        )}
+      </Accordion>
     </div>
   );
 };

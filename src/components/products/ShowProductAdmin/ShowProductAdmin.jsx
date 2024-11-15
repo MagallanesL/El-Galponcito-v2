@@ -86,9 +86,9 @@ const ShowProductAdmin = () => {
         <thead>
           <tr>
             <th>Nombre</th>
+            <th>Ingredientes</th>
             <th>Categoría</th>
             <th>Precio</th>
-            <th>Ingredientes</th>
             <th>Acciones</th>
           </tr>
         </thead>

@@ -1,0 +1,24 @@
+.status-enviado {
+    background-color: #28a745; /* Verde */
+    color: white;
+  }
+  
+  .status-cocinando {
+    background-color: #ffc107; /* Amarillo */
+    color: white;
+  }
+  
+  .status-pendiente {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+  }
+  
+  .status-default {
+    background-color: #6c757d; /* Gris */
+    color: white;
+  }
+  .dropdown-item.active, .dropdown-item:active {
+    background-color: #007bff;
+    color: white;
+  }
+  

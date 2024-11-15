@@ -1,0 +1,40 @@
+.nav-tabs {
+    background-color: #030303; /* Color cálido que recuerda la pizza horneada */
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  .nav-tabs .nav-link {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: #e05329; /* Un color más oscuro para indicar la selección */
+    color: #fff;
+    border-radius: 10px;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    background-color: #e05c34; /* Un tono intermedio para hover */
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+  
+  .nav-item {
+    flex-grow: 1;
+    text-align: center; /* Centra el texto */
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif; /* Tipografía moderna */
+    background-color: #ffe8d6; /* Fondo que imita un papel pergamino */
+    color: #333;
+  }
+  

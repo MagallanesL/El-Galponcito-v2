@@ -40,18 +40,29 @@
   color: #555;
 }
 
+/* Contenedor de los botones */
+.table .buttonContainer {
+  display: flex;
+  justify-content: space-between; /* Esto separa los botones */
+  gap: 10px; /* Añade un espacio entre los botones */
+}
+
 .table .editButton,
 .table .deleteButton {
-  padding: 5px 10px;
+  padding: 8px 12px; /* Ajustamos el tamaño del padding */
   border: none;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 5px;
+  font-size: 16px; /* Ajustamos el tamaño de la fuente */
+  font-weight: bold; /* Añadimos negritas */
+  color: white; /* Aseguramos que el texto sea blanco */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Efecto de transición */
+  text-align: center;
+  width: 48%; /* Ajustamos el ancho para que quepan en una línea */
 }
 
 .table .editButton {
   background-color: #f0ad4e;
-  margin-right: 5px; /* Agrega un pequeño margen entre los botones */
 }
 
 .table .deleteButton {
@@ -60,6 +71,10 @@
 
 .table .editButton:hover,
 .table .deleteButton:hover {
+  transform: scale(1.05); /* Aumentamos ligeramente el tamaño en hover */
+}
+
+.table .editButton:hover {
   background-color: #e99c42;
 }
 
@@ -67,12 +82,7 @@
   background-color: #c9302c;
 }
 
-
-.productCategory {
-  margin-top: 20px;
-}
-
-/* Estilos Responsivos */
+/* Estilos responsivos */
 @media screen and (max-width: 768px) {
   .productsContainer {
     margin: 10px;
@@ -80,7 +90,7 @@
   }
 
   .productsTitle {
-    font-size: 20px;
+    font-size: 22px; /* Ajustamos el tamaño de la fuente */
   }
 
   .table th, .table td {
@@ -88,9 +98,16 @@
     padding: 8px;
   }
 
-  .searchContainer {
-    flex-direction: column;
-    align-items: flex-start;
+  .table .editButton, 
+  .table .deleteButton {
+    width: 100%; /* En pantallas pequeñas, ocupan todo el ancho */
+    padding: 10px 15px;
+    font-size: 18px; /* Aumentamos el tamaño de la fuente en pantallas pequeñas */
+  }
+
+  .table .buttonContainer {
+    flex-direction: column; /* Botones en columnas en pantallas pequeñas */
+    gap: 10px; /* Espaciado entre botones */
   }
 }
 
@@ -101,7 +118,7 @@
   }
 
   .productsTitle {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .table th, .table td {
@@ -109,9 +126,15 @@
     padding: 6px;
   }
 
-  .searchContainer {
-    margin-bottom: 10px;
-    flex-direction: column;
-    align-items: flex-start;
+  .table .editButton, 
+  .table .deleteButton {
+    width: 100%;
+    padding: 12px 18px; /* Aumentamos el padding */
+    font-size: 20px; /* Aumentamos el tamaño de la fuente */
+  }
+
+  .table .buttonContainer {
+    flex-direction: column; /* Botones en columnas */
+    gap: 8px;
   }
 }

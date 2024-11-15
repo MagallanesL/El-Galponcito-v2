@@ -13,7 +13,7 @@ import { AuthProvider } from './context/authcontext';
 import ProtectedRoute from './routes/protectedRoute';
 
 function App() {
-  const adminEmail = "admin@elgalponcito.com";  // Podrías obtener esto desde el contexto de autenticación.
+  const adminEmail = "admin@elgalponcito.com";  
 
   return (
     <AuthProvider>
@@ -23,7 +23,7 @@ function App() {
             {/* Ruta pública */}
             <Route path='/' element={<Login />} />
 
-            {/* Rutas protegidas para usuarios autenticados */}
+            
             <Route path="/clients" element={
               <ProtectedRoute>
                 <ViewClients />

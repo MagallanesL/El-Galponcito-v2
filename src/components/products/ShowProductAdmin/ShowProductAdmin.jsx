@@ -3,7 +3,7 @@ import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firesto
 import { db } from '../../../firebase/firebaseconfig';
 import Swal from 'sweetalert2';
 import SearchBar from './SearchBar/SearchBar';
-import './ShowProductAdmin.css'; // Asegúrate de tener los estilos aplicados
+import './css/showProductAdmin.css'
 
 const ShowProductAdmin = () => {
   const [products, setProducts] = useState([]);

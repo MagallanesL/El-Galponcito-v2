@@ -8,6 +8,8 @@ import ErrorMessage from './errormessage/ErrorMessage';
 import AuthButton from './authButton/AuthButton';
 import ToggleButton from './toggleButton/ToggleButton';
 import styles from './css/Login.module.css';
+import { PiEyesFill } from "react-icons/pi";
+import { TbEyeOff } from "react-icons/tb";
 import { AuthContext } from "../../context/authcontext";
 
 const auth = getAuth();
@@ -21,6 +23,7 @@ const Login = () => {
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
   const [error, setError] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -37,7 +40,6 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const userEmail = userCredential.user.email;
 
-      // Obtener datos del usuario desde Firestore utilizando su uid
       const userRef = doc(db, "Usuarios", userCredential.user.uid); 
       const userSnap = await getDoc(userRef);
 
@@ -46,18 +48,16 @@ const Login = () => {
         const fullUserData = {
           uid: userCredential.user.uid,
           email: userEmail,
-          nombre: userFromDb.nombre || "Usuario", // Si no hay nombre, asigna un valor por defecto
+          nombre: userFromDb.nombre || "Usuario",
           telefono: userFromDb.telefono || '',
           direccion: userFromDb.direccion || '',
         };
 
-        // Actualiza el estado global de usuario
         login(fullUserData);
-        localStorage.setItem("user", JSON.stringify(fullUserData)); // Guarda en localStorage
+        localStorage.setItem("user", JSON.stringify(fullUserData));
 
         setError(null);
-        // Navegar dependiendo del email del usuario
-        if (userEmail === 'elgalponcito@elgalponcito.com') {
+        if (userEmail === 'admin@elgalponcito.com') {
           navigate('/admin');
         } else {
           navigate('/clients');
@@ -80,7 +80,6 @@ const Login = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Guardar datos del nuevo usuario en la colección "Usuarios"
       await setDoc(doc(db, "Usuarios", user.uid), {
         email: user.email,
         nombre,
@@ -89,7 +88,6 @@ const Login = () => {
         createdAt: new Date(),
       });
 
-      // Actualizar el estado global después de registrarse
       login({
         email: user.email,
         nombre,
@@ -98,7 +96,7 @@ const Login = () => {
       });
 
       setError(null);
-      navigate('/clients');
+      navigate('/login');
     } catch (err) {
       setError('Error al registrarse, intente nuevamente.');
     }
@@ -119,7 +117,26 @@ const Login = () => {
         )}
         
         <InputField name="email" value={email} onChange={handleInputChange} placeholder="Correo" type="email" className={styles.inputField} />
-        <InputField name="password" value={password} onChange={handleInputChange} placeholder="Contraseña" type="password" className={styles.inputField} />
+        
+        <div className={styles.passwordContainer}>
+          <div className={styles.passwordInputWrapper}>
+            <InputField 
+              name="password" 
+              value={password} 
+              onChange={handleInputChange} 
+              placeholder="Contraseña" 
+              type={passwordVisible ? 'text' : 'password'} 
+              className={styles.inputField} 
+            />
+            <button 
+              type="button" 
+              className={styles.togglePasswordButton} 
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ?  <PiEyesFill /> : <TbEyeOff /> }
+            </button>
+          </div>
+        </div>
         
         <AuthButton onClick={isRegister ? handleRegister : handleLogin} text={isRegister ? 'Registrarse' : 'Iniciar Sesión'} className={styles.authButton} />
         

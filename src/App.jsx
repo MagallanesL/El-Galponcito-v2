@@ -13,7 +13,7 @@ import { AuthProvider } from './context/authcontext';
 import ProtectedRoute from './routes/protectedRoute';
 
 function App() {
-  const adminEmail = "elgalponcito@elgalponcito.com";  // Podrías obtener esto desde el contexto de autenticación.
+  const adminEmail = "admin@elgalponcito.com";  // Podrías obtener esto desde el contexto de autenticación.
 
   return (
     <AuthProvider>

@@ -101,6 +101,32 @@
   margin-top: 10px;
 }
 
+
+/* Contenedor de la contraseña (agregar posicionamiento relativo) */
+.passwordContainer {
+  position: relative; /* Agrega posicionamiento relativo para los elementos internos */
+  width: 100%;
+}
+
+/* Botón para alternar visibilidad de la contraseña */
+.togglePasswordButton {
+  position: absolute; 
+  top: 22px; 
+  right: 10px; 
+  background: transparent; 
+  border: none; 
+  cursor: pointer; 
+  color: #666; 
+  font-size: 1.2rem; 
+  padding: 0; 
+}
+
+
+.togglePasswordButton:hover {
+  color: #D46A6A; 
+}
+
+
 /* Responsive: Móvil */
 @media (max-width: 480px) {
   .loginContainer {

@@ -77,7 +77,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Asegura que los elementos no se amontonen */
+    justify-content: space-between; 
   }
   
   .productCard:hover {

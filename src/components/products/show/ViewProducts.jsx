@@ -9,7 +9,7 @@ const ViewProducts = () => {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const { cartItems, addToCart } = useContext(CartContext);  // Usamos el contexto para agregar productos al carrito
+  const { cartItems, addToCart } = useContext(CartContext);  
 
   const productsCollection = collection(db, 'productos');
 

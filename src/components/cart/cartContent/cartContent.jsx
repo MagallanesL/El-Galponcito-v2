@@ -2,16 +2,17 @@ import { useEffect, useState, useContext } from "react";
 import { db } from "../../../firebase/firebaseconfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../../context/authcontext";
-import { CartContext } from "../../../context/dataContext"; 
+import { CartContext } from "../../../context/dataContext";
 import './cartcontent.css';
 
 const CartContent = () => {
   const { user } = useContext(AuthContext);
-  const { cartItems } = useContext(CartContext);  
+  const { cartItems } = useContext(CartContext);
   const [userData, setUserData] = useState(null);
   const [total, setTotal] = useState(0);
   const [deliveryOption, setDeliveryOption] = useState("retirar");
   const [address, setAddress] = useState("");
+  const [methodPayment, setMethodPayment] = useState("efectivo"); 
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -48,6 +49,7 @@ const CartContent = () => {
       totalAmount: total,
       deliveryOption: deliveryOption,
       address: address,
+      methodPayment: methodPayment, // Incluye el método de pago
       timestamp: new Date().toISOString()
     };
 
@@ -66,9 +68,9 @@ const CartContent = () => {
     <div className="cartContainer">
       <div className="cartForm">
         <h2>¡Listo para tu pedido {userData.nombre}? 🛍️</h2>
-       
+
         <div className="cartDetails">
-          <h3 className="info-degustar">¡Veamos con que te vas a degustar hoy!</h3>
+          <h3 className="info-degustar">¡Veamos con qué te vas a degustar hoy!</h3>
           {cartItems.length === 0 ? (
             <p>Tu carrito está vacío... ¡Agrega productos para empezar! 🌟</p>
           ) : (
@@ -105,6 +107,32 @@ const CartContent = () => {
                 />
               </div>
             )}
+         <div>
+  <label>¿Cómo deseas pagar?</label>
+  <select
+    value={methodPayment}
+    onChange={(e) => setMethodPayment(e.target.value)}
+  >
+    <option value="efectivo">Efectivo</option>
+    <option value="mercadoPago">Transferencia por Mercado Pago</option>
+  </select>
+</div>
+{methodPayment === "mercadoPago" && (
+  <p>
+    <strong>Alias:</strong> 
+    <span style={{ 
+      color: "#ff5722", 
+      fontWeight: "bold", 
+      fontSize: "1.2em", 
+      backgroundColor: "#fff5e1", 
+      padding: "5px 10px", 
+      borderRadius: "5px" 
+    }}>
+      alu.magallanes.mp
+    </span>
+  </p>
+)}
+
             <button type="submit">¡Confirmar mi pedido! 🎯</button>
           </form>
         </div>

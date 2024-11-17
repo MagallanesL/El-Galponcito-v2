@@ -1,32 +1,34 @@
 import Productos from '../../components/products/show/ViewProducts';
 import { Link } from 'react-router-dom';
 import { db } from '../../firebase/firebaseconfig';
-import { getDocs, collection } from 'firebase/firestore'; // getDocs para obtener todos los documentos
-import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../context/authcontext'; // Asegúrate de importar tu contexto de autenticación
 import { GiFullPizza } from "react-icons/gi";
 
 const ViewClients = () => {
-  // Inicializar el estado con un array vacío
-  const [usuarios, setUsuarios] = useState([]);
+  const { user } = useContext(AuthContext); // Obtén el usuario logueado del contexto
+  const [userData, setUserData] = useState(null);
 
-  // Definir la función para obtener los clientes
-  const getClients = async () => {
-    // Especifica la colección de Firestore
-    const UsuariosCollection = collection(db, 'Usuarios'); // Asegúrate de que el nombre coincida con tu colección
-    const data = await getDocs(UsuariosCollection);
-    // Mapea los documentos y establece el estado
-    setUsuarios(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
-
-  // Ejecutar getClients cuando el componente se monte
+  // Obtener datos del usuario logueado desde Firestore
   useEffect(() => {
-    getClients();
-  }, []);
+    const fetchUserData = async () => {
+      if (user && user.uid) {
+        const userDocRef = doc(db, 'Usuarios', user.uid); // Asegúrate de que el nombre de la colección sea correcto
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
 
   return (
     <div>
-      {/* Accede a usuarios y muestra el nombre si existe */}
-      <h1>Hola! {usuarios.length > 0 ? usuarios[0].nombre : 'Usuario'}</h1>
+      {/* Mostrar el nombre del usuario logueado si está disponible */}
+      <h1>Hola! {userData ? userData.nombre : 'Cargando usuario...'}!</h1>
       <Link to={'/cart'}><GiFullPizza /></Link>
       <Productos />
     </div>

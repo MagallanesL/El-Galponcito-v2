@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authcontext'; // Asegúrate de importar tu contexto de autenticación
 import { GiFullPizza } from "react-icons/gi";
+import './viewClients.css'
 
 const ViewClients = () => {
   const { user } = useContext(AuthContext); // Obtén el usuario logueado del contexto
@@ -28,7 +29,7 @@ const ViewClients = () => {
   return (
     <div>
       {/* Mostrar el nombre del usuario logueado si está disponible */}
-      <h1>Hola! {userData ? userData.nombre : 'Cargando usuario...'}!</h1>
+      <h1>Hola! {userData ? userData.nombre : 'Cargando usuario...'}</h1>
       <Link to={'/cart'}><GiFullPizza /></Link>
       <Productos />
     </div>

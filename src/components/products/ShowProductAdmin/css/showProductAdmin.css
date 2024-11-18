@@ -3,9 +3,9 @@
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  background-image: url('../../../assets/galponcitolocal.jpg'); /* Ruta a la imagen de fondo */
-  background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
-  background-position: center; /* Centra la imagen */
+  background-image: url('../../../assets/galponcitolocal.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .productsTitle {
@@ -13,7 +13,7 @@
   font-weight: bold;
   margin-bottom: 20px;
   color: #333;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); 
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .searchContainer {
@@ -29,36 +29,46 @@
 }
 
 .table th, .table td {
-  padding: 10px;
+  padding: 8px;
   text-align: center;
   border: 1px solid #ddd;
-  background-color: rgba(255, 255, 255, 0.397); /* Fondo blanco semitransparente */
+  background-color: rgba(255, 255, 255, 0.397);
 }
 
 .table th {
-  background-color: rgba(244, 244, 244, 0.7); /* Fondo de encabezado más claro */
+  background-color: rgba(244, 244, 244, 0.7);
   color: #555;
 }
 
-/* Contenedor de los botones */
+.table th:nth-child(2), .table td:nth-child(2) {
+  width: 50%; 
+}
+
+.table th:nth-child(5), .table td:nth-child(5) {
+  width: 20%; 
+}
+
 .table .buttonContainer {
   display: flex;
-  justify-content: space-between; /* Esto separa los botones */
-  gap: 10px; /* Añade un espacio entre los botones */
+  justify-content: space-between; 
+  width: 100%; 
 }
 
 .table .editButton,
-.table .deleteButton {
-  padding: 8px 12px; /* Ajustamos el tamaño del padding */
+.table .deleteButton,
+.table .disableButton {
+  padding: 6px 10px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 16px; /* Ajustamos el tamaño de la fuente */
-  font-weight: bold; /* Añadimos negritas */
-  color: white; /* Aseguramos que el texto sea blanco */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Efecto de transición */
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   text-align: center;
-  width: 48%; /* Ajustamos el ancho para que quepan en una línea */
+  flex-grow: 1; 
+  margin: 0 10px; 
+  max-width: 120px; 
 }
 
 .table .editButton {
@@ -69,9 +79,15 @@
   background-color: #d9534f;
 }
 
+.table .disableButton {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
 .table .editButton:hover,
-.table .deleteButton:hover {
-  transform: scale(1.05); /* Aumentamos ligeramente el tamaño en hover */
+.table .deleteButton:hover,
+.table .disableButton:hover {
+  transform: scale(1.05);
 }
 
 .table .editButton:hover {
@@ -82,12 +98,8 @@
   background-color: #c9302c;
 }
 
-.disableButton {
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f0f0f0;
-  transition: all 0.3s ease;
+.table .disableButton:hover {
+  background-color: #d0d0d0;
 }
 
 .disableButton.disabled {
@@ -97,15 +109,64 @@
 }
 
 .disableButton:not(.disabled) {
-  background-color: #4CAF50; /* Verde cuando está habilitado */
+  background-color: #07f50f;
 }
 
-.disableButton:hover {
-  transform: scale(1.05);
+.inputField {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin: 5px 0;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
+.inputField:focus {
+  outline: none;
+  border-color: #07f50f;
+  box-shadow: 0 0 5px rgba(7, 245, 15, 0.5);
+}
 
-/* Estilos responsivos */
+.editInput {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.button-edit {
+  background-color: #f0ad4e;
+}
+
+.button-delete {
+  background-color: #d9534f;
+}
+
+.button-disable {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.button-edit:hover {
+  background-color: #e99c42;
+}
+
+.button-delete:hover {
+  background-color: #c9302c;
+}
+
+.button-disable:hover {
+  background-color: #d0d0d0;
+}
+
+.button-disable.disabled {
+  background-color: gray;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.button-disable:not(.disabled) {
+  background-color: #07f50f;
+}
+
 @media screen and (max-width: 768px) {
   .productsContainer {
     margin: 10px;
@@ -113,7 +174,7 @@
   }
 
   .productsTitle {
-    font-size: 22px; /* Ajustamos el tamaño de la fuente */
+    font-size: 22px;
   }
 
   .table th, .table td {
@@ -121,17 +182,18 @@
     padding: 8px;
   }
 
-  .table .editButton, 
-  .table .deleteButton {
-    width: 100%; /* En pantallas pequeñas, ocupan todo el ancho */
-    padding: 10px 15px;
-    font-size: 18px; 
+  .table .editButton,
+  .table .deleteButton,
+  .table .disableButton {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
     margin: 0 5px;
   }
 
   .table .buttonContainer {
-    flex-direction: column; /* Botones en columnas en pantallas pequeñas */
-    gap: 10px; /* Espaciado entre botones */
+    flex-direction: column;
+    gap: 10px;
   }
 }
 
@@ -150,16 +212,17 @@
     padding: 6px;
   }
 
-  .table .editButton, 
-  .table .deleteButton {
-    width: 100%;
-    padding: 12px 18px; /* Aumentamos el padding */
-    font-size: 20px; /* Aumentamos el tamaño de la fuente */
+  .table .editButton,
+  .table .deleteButton,
+  .table .disableButton {
+    width:80%;
+    padding: 12px 18px;
+    font-size: 18px;
   }
 
   .table .buttonContainer {
     display: flex;
     justify-content: space-between;
-    padding: 5px; 
+    padding: 5px;
   }
 }

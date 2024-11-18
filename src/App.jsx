@@ -22,8 +22,7 @@ function App() {
           <Routes>
             {/* Ruta pública */}
             <Route path='/' element={<Login />} />
-
-            
+                        
             <Route path="/clients" element={
               <ProtectedRoute>
                 <ViewClients />

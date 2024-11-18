@@ -6,7 +6,7 @@ import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authcontext';
 import { CartContext } from '../../context/dataContext'; // Importar CartContext
 import { GiFullPizza } from "react-icons/gi";
-import './ViewClients.css'; // Archivo CSS externo para estilos
+import './css/viewClients.css';
 
 const ViewClients = () => {
   const { user } = useContext(AuthContext);

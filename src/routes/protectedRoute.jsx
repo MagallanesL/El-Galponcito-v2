@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/authcontext';
 
 const ProtectedRoute = ({ children, adminEmail }) => {
-  const { user } = useContext(AuthContext); // Obtener los datos del usuario desde el contexto
+  const { user } = useContext(AuthContext);  // Obtener los datos del usuario desde el contexto
 
   if (!user) {
     // Si no hay usuario logueado, redirigir al login
@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children, adminEmail }) => {
   }
 
   if (adminEmail && user.email !== adminEmail) {
-    // Si el usuario no es el admin, redirigir a acceso denegado o a donde desees
+    // Si el usuario no es el admin, redirigir a acceso denegado
     return <Navigate to="/access-denied" />;
   }
 

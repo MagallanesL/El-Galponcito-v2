@@ -3,35 +3,51 @@ import { Link } from 'react-router-dom';
 import { db } from '../../firebase/firebaseconfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../context/authcontext'; // Asegúrate de importar tu contexto de autenticación
+import { AuthContext } from '../../context/authcontext';
+import { CartContext } from '../../context/dataContext'; // Importar CartContext
 import { GiFullPizza } from "react-icons/gi";
-import './viewClients.css'
+import './ViewClients.css'; // Archivo CSS externo para estilos
 
 const ViewClients = () => {
-  const { user } = useContext(AuthContext); // Obtén el usuario logueado del contexto
+  const { user } = useContext(AuthContext);
+  const { getTotalQuantity } = useContext(CartContext); // Obtener función desde CartContext
   const [userData, setUserData] = useState(null);
 
-  // Obtener datos del usuario logueado desde Firestore
+  // Función para capitalizar la primera letra
+  const capitalizeFirstLetter = (text) => {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (user && user.uid) {
-        const userDocRef = doc(db, 'Usuarios', user.uid); // Asegúrate de que el nombre de la colección sea correcto
+        const userDocRef = doc(db, 'Usuarios', user.uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           setUserData(userDoc.data());
         }
       }
     };
-
     fetchUserData();
   }, [user]);
 
   return (
-    <div>
-      {/* Mostrar el nombre del usuario logueado si está disponible */}
-      <h1>Hola! {userData ? userData.nombre : 'Cargando usuario...'}</h1>
-      <Link to={'/cart'}><GiFullPizza /></Link>
-      <Productos />
+    <div className="view-clients-container">
+      <header className="view-clients-header">
+        <h1 className="welcome-message">
+          Hola! {userData ? capitalizeFirstLetter(userData.nombre) : 'Cargando usuario...'}
+        </h1>
+        <Link to={'/cart'} className="pizza-icon">
+          <GiFullPizza />
+          {getTotalQuantity() > 0 && (
+            <span className="product-count">{getTotalQuantity()}</span>
+          )}
+        </Link>
+      </header>
+      <main>
+        <Productos />
+      </main>
     </div>
   );
 };

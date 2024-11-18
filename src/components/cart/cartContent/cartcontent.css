@@ -115,6 +115,29 @@
   padding: 0;
 }
 
+
+.quantity-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.quantity-btn {
+  background-color: #D46A6A;
+  color: #fff;
+  font-size: 0.9rem; /* Reduce el tamaño de la fuente */
+  border: none;
+  padding: 3px 8px; /* Reduce el padding para hacer los botones más pequeños */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.quantity-btn:hover {
+  background-color: #b04e4e;
+}
+
+
+
 /* Responsive: Móvil */
 @media (max-width: 480px) {
   .cartForm {

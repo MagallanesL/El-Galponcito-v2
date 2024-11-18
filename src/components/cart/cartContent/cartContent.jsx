@@ -3,16 +3,19 @@ import { db } from "../../../firebase/firebaseconfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../../context/authcontext";
 import { CartContext } from "../../../context/dataContext";
+import { useNavigate } from "react-router-dom"; // Para redirección
+import Swal from "sweetalert2"; // Importar SweetAlert2
 import './cartcontent.css';
 
 const CartContent = () => {
   const { user } = useContext(AuthContext);
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, updateCart } = useContext(CartContext);
   const [userData, setUserData] = useState(null);
   const [total, setTotal] = useState(0);
   const [deliveryOption, setDeliveryOption] = useState("retirar");
   const [address, setAddress] = useState("");
-  const [methodPayment, setMethodPayment] = useState("efectivo"); 
+  const [methodPayment, setMethodPayment] = useState("efectivo");
+  const navigate = useNavigate(); // Hook para redirección
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,7 +30,6 @@ const CartContent = () => {
     fetchUserData();
   }, [user]);
 
-  // Calcular el total
   useEffect(() => {
     const calculateTotal = () => {
       const totalAmount = cartItems.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
@@ -36,10 +38,26 @@ const CartContent = () => {
     calculateTotal();
   }, [cartItems]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const increaseQuantity = (id) => {
+    const updatedItems = cartItems.map(item =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    updateCart(updatedItems);
+  };
 
-    // Crear el objeto con la información del pedido
+  const decreaseQuantity = (id) => {
+    const updatedItems = cartItems
+      .map(item =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 } 
+          : item
+      )
+      .filter(item => item.quantity > 0); 
+    updateCart(updatedItems);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const order = {
       userId: user.uid,
       userName: userData.nombre,
@@ -49,18 +67,43 @@ const CartContent = () => {
       totalAmount: total,
       deliveryOption: deliveryOption,
       address: address,
-      methodPayment: methodPayment, // Incluye el método de pago
+      methodPayment: methodPayment,
       timestamp: new Date().toISOString()
     };
-
-    // Enviar el pedido a Firebase
+  
     const orderRef = doc(db, "Pedidos", user.uid + "_" + new Date().toISOString());
-    setDoc(orderRef, order).then(() => {
-      console.log("¡Pedido enviado con éxito! 🎉");
-    }).catch((error) => {
-      console.error("Oops, algo salió mal al enviar el pedido: ", error);
-    });
+    
+    try {
+      // Guardar el pedido en la base de datos
+      await setDoc(orderRef, order);
+  
+      
+      updateCart([]); 
+  
+      // Mostrar el Swal alert
+      Swal.fire({
+        title: "¡Pedido Confirmado! 🎉",
+        text: "¡Gracias por elegirnos, tu pizza está en camino! 🍕🍕\nNos vemos pronto en el galpón más delicioso de la ciudad!",
+        icon: "success",
+        confirmButtonText: "¡Genial! 🍕",
+        customClass: {
+          confirmButton: 'swal-button'
+        }
+      }).then(() => {
+        // Redirigir al cliente a la ruta de clientes
+        navigate("/clients");
+      });
+  
+    } catch (error) {
+      Swal.fire({
+        title: "¡Ups! Algo salió mal 😔",
+        text: "Parece que hubo un error al enviar tu pedido. Por favor, intenta de nuevo.",
+        icon: "error",
+        confirmButtonText: "¡Lo intentaré de nuevo! 🔄"
+      });
+    }
   };
+  
 
   if (!userData) return <p>Estamos cargando tus datos... ¡un momento! ⏳</p>;
 
@@ -77,7 +120,13 @@ const CartContent = () => {
             <ul>
               {cartItems.map((item) => (
                 <li key={item.id}>
-                  {item.name} - ${item.price} x {item.quantity}
+                  <span>{item.name}</span> 
+                  <span>${item.price}</span> 
+                  <span>x {item.quantity}</span>
+                  <div className="quantity-controls">
+                    <button className="quantity-btn" onClick={() => decreaseQuantity(item.id)}>-</button>
+                    <button className="quantity-btn" onClick={() => increaseQuantity(item.id)}>+</button>
+                  </div>
                 </li>
               ))}
               <p><strong>Total: </strong>${total}</p>
@@ -107,31 +156,23 @@ const CartContent = () => {
                 />
               </div>
             )}
-         <div>
-  <label>¿Cómo deseas pagar?</label>
-  <select
-    value={methodPayment}
-    onChange={(e) => setMethodPayment(e.target.value)}
-  >
-    <option value="efectivo">Efectivo</option>
-    <option value="mercadoPago">Transferencia por Mercado Pago</option>
-  </select>
-</div>
-{methodPayment === "mercadoPago" && (
-  <p>
-    <strong>Alias:</strong> 
-    <span style={{ 
-      color: "#ff5722", 
-      fontWeight: "bold", 
-      fontSize: "1.2em", 
-      backgroundColor: "#fff5e1", 
-      padding: "5px 10px", 
-      borderRadius: "5px" 
-    }}>
-      alu.magallanes.mp
-    </span>
-  </p>
-)}
+
+            <div>
+              <label>¿Método de pago?</label>
+              <select
+                value={methodPayment}
+                onChange={(e) => setMethodPayment(e.target.value)}
+              >
+                <option value="efectivo">Efectivo 💵</option>
+                <option value="mercado_pago">Mercado Pago 💳</option>
+              </select>
+            </div>
+
+            {methodPayment === "mercado_pago" && (
+              <div className="alias-info">
+                <p><strong>Alias: elGalponcito.mp</strong></p>
+              </div>
+            )}
 
             <button type="submit">¡Confirmar mi pedido! 🎯</button>
           </form>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
-import { CartContext } from '../../../context/dataContext';  // Asegúrate de que sea el contexto correcto
+import { CartContext } from '../../../context/dataContext';  
 import './css/viewproducts.css';
 import Swal from 'sweetalert2';
 
@@ -22,13 +22,14 @@ const ViewProducts = () => {
     getProducts();
   }, []);
 
-  // Filtrar productos
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory = category === 'all' || product.category === category;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+//filtrar productos
+const filteredProducts = products.filter((product) => {
+  const matchesCategory = category === 'all' || product.category === category;
+  const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+  const isEnabled = product.disabled !== true; 
+  return matchesCategory && matchesSearch && isEnabled;
+});
 
   // Agregar al carrito
   const handleAddToCart = (product) => {

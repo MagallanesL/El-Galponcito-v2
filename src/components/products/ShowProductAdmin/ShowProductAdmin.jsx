@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
 import Swal from 'sweetalert2';
+import { SlLike ,SlDislike } from "react-icons/sl";
+import { MdDeleteForever, MdEditRoad } from "react-icons/md";
 import SearchBar from './SearchBar/SearchBar';
 import './css/showProductAdmin.css'
 
@@ -66,6 +68,20 @@ const ShowProductAdmin = () => {
         });
       }
     });
+  };
+
+  // Función para habilitar/deshabilitar un producto
+  const handleDisable = async (product) => {
+    const productDoc = doc(db, 'productos', product.id);
+    const updatedProduct = { ...product, disabled: !product.disabled }; // Cambiar el estado de deshabilitado
+
+    // Actualizar el producto en Firebase
+    await updateDoc(productDoc, updatedProduct);
+
+    // Actualizar la lista local de productos
+    setProducts(products.map((prod) => 
+      prod.id === product.id ? updatedProduct : prod
+    ));
   };
 
   // Filtrar productos según la categoría y el término de búsqueda
@@ -165,14 +181,21 @@ const ShowProductAdmin = () => {
                       className="editButton" 
                       onClick={() => handleEditClick(product)}
                     >
-                      Editar
+                      <MdEditRoad />
                     </button>
                     <button 
                       className="deleteButton" 
                       onClick={() => handleDelete(product)}
                     >
-                      Eliminar
+                      <MdDeleteForever />
                     </button>
+                    <button 
+  className={`disableButton ${product.disabled ? 'disabled' : ''}`} 
+  onClick={() => handleDisable(product)}
+>
+  {product.disabled ? <SlDislike /> : <SlLike />}
+</button>
+
                   </>
                 )}
               </td>

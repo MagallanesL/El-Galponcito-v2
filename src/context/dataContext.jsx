@@ -10,21 +10,28 @@ export const CartProvider = ({ children }) => {
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prevItems) => {
-      // Verifica si el producto ya está en el carrito
-      const existingProduct = prevItems.find(item => item.id === product.id);
+      const existingProduct = prevItems.find((item) => item.id === product.id);
       if (existingProduct) {
-        // Si ya existe, aumenta la cantidad
-        return prevItems.map(item => 
+        return prevItems.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      // Si no está, agrega el producto
       return [...prevItems, { ...product, quantity: 1 }];
     });
   };
 
+  // Función para actualizar el carrito, para aumentar o disminuir la cantidad
+  const updateCart = (updatedItems) => {
+    setCartItems(updatedItems);
+  };
+
+  // Función para obtener la cantidad total de productos en el carrito
+  const getTotalQuantity = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, updateCart, getTotalQuantity }}>
       {children}
     </CartContext.Provider>
   );

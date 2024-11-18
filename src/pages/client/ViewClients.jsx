@@ -4,8 +4,9 @@ import { db } from '../../firebase/firebaseconfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authcontext';
-import { CartContext } from '../../context/dataContext'; // Importar CartContext
+import { CartContext } from '../../context/dataContext'; 
 import { GiFullPizza } from "react-icons/gi";
+import { TfiPanel } from "react-icons/tfi";
 import './css/viewClients.css';
 
 const ViewClients = () => {
@@ -33,8 +34,15 @@ const ViewClients = () => {
   }, [user]);
 
   return (
+    <>
+        {user && user.email === 'admin@elgalponcito.com' && (
+          <Link to="/admin"  >
+            <button  className="admin-icon"><TfiPanel /></button>
+          </Link>
+        )}
     <div className="view-clients-container">
       <header className="view-clients-header">
+      
         <h1 className="welcome-message">
           Hola! {userData ? capitalizeFirstLetter(userData.nombre) : 'Cargando usuario...'}
         </h1>
@@ -49,6 +57,7 @@ const ViewClients = () => {
         <Productos />
       </main>
     </div>
+          </>
   );
 };
 

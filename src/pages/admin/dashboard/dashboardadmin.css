@@ -1,11 +1,22 @@
+/* Menú hamburguesa (ícono) */
+.hamburger-menu {
+  display: none; /* Por defecto no se muestra en pantallas grandes */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Estilo general del menú */
 .nav-tabs {
   background-color: #030303;
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  max-width: 80%; /* Limita el ancho máximo del navbar */
-  margin: 0 auto; /* Centra el navbar */
+  display: flex; /* Visible por defecto en pantallas grandes */
+  flex-direction: row;
 }
 
 .nav-tabs .nav-link {
@@ -29,25 +40,31 @@
   transform: scale(1.05);
 }
 
+/* Elementos del menú */
 .nav-item {
   flex-grow: 1;
   text-align: center;
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #ffe8d6;
-  color: #333;
-}
-
+/* Responsividad para pantallas pequeñas */
 @media (max-width: 768px) {
-  .nav-tabs {
-      display: none; /* Escondemos el navbar en pantallas pequeñas */
+  .hamburger-menu {
+    display: block; /* Mostrar ícono de menú en pantallas pequeñas */
   }
 
-  .hamburger-menu {
-      display: flex; /* Mostramos el menú hamburguesa */
-      justify-content: center;
-      margin: 10px 0;
+  .nav-tabs {
+    display: none; /* Ocultar menú completo por defecto */
+    flex-direction: column; /* Cambiar a diseño vertical */
+    background-color: #030303;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    right: 10px;
+    border-radius: 10px;
+    z-index: 999; /* Asegurar que esté sobre otros elementos */
+  }
+
+  .nav-tabs.show {
+    display: flex; /* Mostrar menú cuando se activa */
   }
 }

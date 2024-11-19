@@ -4,7 +4,7 @@ import CartContent from './components/cart/cartContent/cartContent';
 import CreateNew from './components/products/create/createNew';
 import Admin from './pages/admin/dashboard/DashboardAdmin';
 import ProductCreated from './pages/admin/ProductsCreated/productsCreated';
-import ZoneCobertura from './pages/admin/Zone/zoneCobert';
+import ZoneCobertura from './pages/admin/Zone/CoverageZone';
 import PlaceOrders from './pages/admin/PlaceOrders/PlaceOrders';
 import Reports from './pages/admin/reports/reports';
 import ViewClients from './pages/client/ViewClients';

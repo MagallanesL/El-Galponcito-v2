@@ -35,13 +35,7 @@ const CreateNew = () => {
     setPrice("");
     setCategory("");
   };
-  console.log({
-    name,
-    description,
-    price,
-    category,
-  });
-  
+    
   return (
     <>
       <DashBoardAdmin />

@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { FaPizzaSlice, FaListAlt, FaMapMarkedAlt, FaShoppingCart, FaChartBar } from "react-icons/fa";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { GiTabletopPlayers } from "react-icons/gi";
+import { TbReportSearch } from "react-icons/tb";
 import './dashboardadmin.css'
 
 const DashboardAdmin = () => {
@@ -43,6 +45,18 @@ const DashboardAdmin = () => {
             <FaChartBar style={{ marginRight: "8px" }} />
             Reportes
           </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/reports">
+            <TbReportSearch style={{ marginRight: "8px" }} />
+            Stock
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+      <Nav.Link as={NavLink} to="/reports" className="disabled" aria-disabled="true">
+      <GiTabletopPlayers style={{ marginRight: "8px" }} />
+             Mesas
+       </Nav.Link>
         </Nav.Item>
       </Nav>
     </div>

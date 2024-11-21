@@ -47,13 +47,13 @@ const DashboardAdmin = () => {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={NavLink} to="/reports">
+          <Nav.Link as={NavLink} to="/stock">
             <TbReportSearch style={{ marginRight: "8px" }} />
             Stock
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-      <Nav.Link as={NavLink} to="/reports" className="disabled" aria-disabled="true">
+      <Nav.Link as={NavLink} to="/table" className="disabled" aria-disabled="true">
       <GiTabletopPlayers style={{ marginRight: "8px" }} />
              Mesas
        </Nav.Link>

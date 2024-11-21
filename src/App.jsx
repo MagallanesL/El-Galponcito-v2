@@ -7,6 +7,8 @@ import ProductCreated from './pages/admin/ProductsCreated/productsCreated';
 import ZoneCobertura from './pages/admin/Zone/CoverageZone';
 import PlaceOrders from './pages/admin/PlaceOrders/PlaceOrders';
 import Reports from './pages/admin/reports/reports';
+import Stock from './pages/admin/stock/index';
+import Table from './pages/admin/table/index';
 import ViewClients from './pages/client/ViewClients';
 import { CartProvider } from './context/dataContext';
 import { AuthProvider } from './context/authcontext';
@@ -63,6 +65,16 @@ function App() {
             <Route path="/reports" element={
               <ProtectedRoute adminEmail={adminEmail}>
                 <Reports />
+              </ProtectedRoute>
+            } />
+            <Route path="/stock" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <Stock />
+              </ProtectedRoute>
+            } />
+            <Route path="/table" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <Table />
               </ProtectedRoute>
             } />
           </Routes>

@@ -1,0 +1,49 @@
+/* Estilos para el contenedor principal */
+.stock-container {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+  
+  /* Título */
+  .stock-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Detalles del stock */
+  .stock-details {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stock-details p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .stock-details span {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Mensaje cuando no hay stock */
+  .no-stock {
+    text-align: center;
+    font-size: 18px;
+    color: #e74c3c;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  

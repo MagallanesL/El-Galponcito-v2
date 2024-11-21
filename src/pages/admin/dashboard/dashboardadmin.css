@@ -1,70 +1,87 @@
-/* Menú hamburguesa (ícono) */
-.hamburger-menu {
-  display: none; /* Por defecto no se muestra en pantallas grandes */
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  cursor: pointer;
-  z-index: 1000;
+/* Estilo general para el contenedor del panel */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5; /* Fondo claro para contraste */
+  color: #333; /* Color de texto oscuro */
+  margin: 0;
+  padding: 0;
 }
 
-/* Estilo general del menú */
+/* Contenedor principal */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Pestañas de navegación */
 .nav-tabs {
-  background-color: #030303;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #343a40; /* Fondo oscuro elegante */
   border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  display: flex; /* Visible por defecto en pantallas grandes */
-  flex-direction: row;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
+/* Estilo para cada enlace de las pestañas */
 .nav-tabs .nav-link {
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 12px 20px;
-  transition: all 0.3s ease;
+  color: #f8f9fa; /* Texto claro */
+  font-size: 18px;
+  font-weight: 600;
   text-transform: uppercase;
-}
-
-.nav-tabs .nav-link.active {
-  background-color: #e05329;
-  color: #fff;
+  padding: 12px 20px;
   border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
+/* Estilo para el enlace activo */
+.nav-tabs .nav-link.active {
+  background-color: #e53e3e; /* Rojo sofisticado para el enlace activo */
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05); /* Ligero aumento en tamaño para destacar */
+}
+
+/* Estilo para los enlaces cuando se pasa el cursor */
 .nav-tabs .nav-link:hover {
-  background-color: #e05c34;
-  color: #ffffff;
+  background-color: #e53e3e; /* Rojo más intenso al pasar el cursor */
+  color: #fff;
   transform: scale(1.05);
 }
 
-/* Elementos del menú */
+/* Estilo para los items de las pestañas */
 .nav-item {
   flex-grow: 1;
   text-align: center;
+  margin: 0 10px;
 }
 
-/* Responsividad para pantallas pequeñas */
+/* Pestañas con iconos */
+.nav-tabs .nav-link svg {
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Ajustes responsivos para pantallas pequeñas */
 @media (max-width: 768px) {
-  .hamburger-menu {
-    display: block; /* Mostrar ícono de menú en pantallas pequeñas */
-  }
-
   .nav-tabs {
-    display: none; /* Ocultar menú completo por defecto */
-    flex-direction: column; /* Cambiar a diseño vertical */
-    background-color: #030303;
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    right: 10px;
-    border-radius: 10px;
-    z-index: 999; /* Asegurar que esté sobre otros elementos */
+    flex-direction: column;
+    padding: 15px;
   }
 
-  .nav-tabs.show {
-    display: flex; /* Mostrar menú cuando se activa */
+  .nav-tabs .nav-link {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .nav-tabs .nav-item {
+    margin-bottom: 10px;
   }
 }

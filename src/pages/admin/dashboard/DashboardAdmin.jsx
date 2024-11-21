@@ -3,8 +3,7 @@ import { NavLink } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { FaPizzaSlice, FaListAlt, FaMapMarkedAlt, FaShoppingCart, FaChartBar } from "react-icons/fa";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import { FiMenu } from "react-icons/fi"; // Ícono de menú hamburguesa
-import "./dashboardadmin.css";
+import { FiMenu } from "react-icons/fi"; 
 import Stock from "../../../components/stock/stock";
 
 const DashboardAdmin = () => {

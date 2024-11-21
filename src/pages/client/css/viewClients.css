@@ -6,32 +6,29 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
+  background-image: url('https://www.example.com/path/to/your-image.jpg'); /* URL de la imagen de fondo */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Para que el fondo no se mueva al hacer scroll */
+  min-height: 100vh; /* Asegura que el contenedor tenga la altura completa */
+  color: #fff; /* Texto claro para contrastar con el fondo */
+  position: relative;
 }
 
-/* Contador de productos */
-.product-count {
+/* Fondo oscuro semitransparente para mejorar el contraste de texto */
+.view-clients-container::before {
+  content: "";
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #ff5722;
-  color: white;
-  font-size: 0.9rem;
-  font-weight: bold;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Fondo oscuro con opacidad */
+  z-index: -1; /* Ponerlo detrás del contenido */
 }
 
-.product-count:hover {
-  transform: scale(1.2);
-}
-
-/* Estilos para el encabezado */
+/* Estilo para el encabezado */
 .view-clients-header {
   display: flex;
   align-items: center;
@@ -40,14 +37,33 @@
   margin-bottom: 20px;
 }
 
+/* Estilo para el ícono de pizza */
+.pizza-icon {
+  font-size: 2.5rem;
+  color: #ff5722;
+  text-decoration: none;
+  transition: transform 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  position: relative; /* Necesario para posicionar el contador */
+}
+
+.pizza-icon:hover {
+  transform: scale(1.1);
+  color: #e64a19;
+}
+
 /* Mensaje de bienvenida */
 .welcome-message {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #0a0701; /* Color principal */
+  color: #ffdf00; /* Color brillante para el texto */
   margin-right: 10px; /* Espacio entre el texto y el ícono */
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2), 0 0 25px #ff5722, 0 0 5px #ff5722; /* Sombra para resaltar */
 }
+
+/* Resto de los estilos sin cambios */
+
 
 
 /* Estilo para el ícono "Volver a Admin" con efecto sticky */

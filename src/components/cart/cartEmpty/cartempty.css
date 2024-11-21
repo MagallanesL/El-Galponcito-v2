@@ -1,0 +1,66 @@
+/* Estilos generales para el contenedor */
+.cartEmptyContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Para que ocupe toda la altura de la pantalla */
+    padding: 20px; /* Añadimos un pequeño padding para evitar que los elementos estén pegados al borde */
+    box-sizing: border-box; /* Para incluir el padding en el tamaño total */
+  }
+  
+  /* Estilo para el contenido dentro del contenedor */
+  .cartEmptyContent {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* Asegura que el contenido no se expanda demasiado */
+    box-sizing: border-box;
+  }
+  
+  /* Estilo para el texto */
+  .cartEmptyContent p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .cartEmptyContent strong {
+    color: #d46a6a; /* Puedes ajustar el color aquí */
+  }
+  
+  /* Estilos para el enlace que actúa como botón */
+  .cartEmptyButton {
+    padding: 12px 20px;
+    background-color: #D46A6A;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 300px; /* Ajuste para que el botón no sea demasiado grande */
+    margin-top: 20px;
+    display: inline-block;
+    transition: background 0.3s ease;
+  }
+  
+  /* Efecto hover para el botón */
+  .cartEmptyButton:hover {
+    background-color: #b04e4e;
+  }
+  
+  /* Responsividad para pantallas más pequeñas */
+  @media (max-width: 768px) {
+    .cartEmptyContent p {
+      font-size: 1rem; /* Reducir el tamaño del texto en pantallas más pequeñas */
+    }
+  
+    .cartEmptyButton {
+      font-size: 1rem;
+      padding: 10px 15px;
+    }
+  }
+  

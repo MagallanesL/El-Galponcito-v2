@@ -1,0 +1,68 @@
+/* Estilos generales para el contenedor */
+.cartEmptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Para que ocupe toda la altura de la pantalla */
+  padding: 20px; /* Añadimos un pequeño padding para evitar que los elementos estén pegados al borde */
+  background-color: #1c1c1c; /* Fondo oscuro para un efecto moderno */
+  box-sizing: border-box; /* Para incluir el padding en el tamaño total */
+  color: #fff; /* Texto blanco para destacar sobre el fondo oscuro */
+}
+
+/* Estilo para el contenido dentro del contenedor */
+.cartEmptyContent {
+  text-align: center;
+  background-color: #2d2d2d; /* Fondo oscuro para el contenido */
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada para darle profundidad */
+  width: 100%;
+  max-width: 500px; /* Asegura que el contenido no se expanda demasiado */
+  box-sizing: border-box;
+}
+
+/* Estilo para el texto */
+.cartEmptyContent p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.cartEmptyContent strong {
+  color: #ff4d4d; /* Rojo brillante para llamar la atención */
+}
+
+/* Estilos para el enlace que actúa como botón */
+.cartEmptyButton {
+  padding: 15px 25px;
+  background-color: #ff4d4d; /* Rojo vibrante para el botón */
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 300px; /* Ajuste para que el botón no sea demasiado grande */
+  margin-top: 20px;
+  display: inline-block;
+  transition: background 0.3s ease, transform 0.3s ease; /* Efecto de transformación */
+}
+
+.cartEmptyButton:hover {
+  background-color: #ff3333; /* Rojo más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .cartEmptyContent p {
+      font-size: 1rem; /* Reducir el tamaño del texto en pantallas más pequeñas */
+  }
+
+  .cartEmptyButton {
+      font-size: 1rem;
+      padding: 12px 18px;
+  }
+}

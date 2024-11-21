@@ -3,7 +3,7 @@ import DashboardAdmin from '../dashboard/DashboardAdmin';
 import { db } from '../../../firebase/firebaseconfig';  
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';  
 import Swal from 'sweetalert2'; // Importamos Swal para mostrar el mensaje
-import './CoverageZone.css'; // Importamos los estilos desde el archivo CSS
+
 
 const CoverageZone = () => {
   const [zones, setZones] = useState([]); // Zonas cargadas de Firebase

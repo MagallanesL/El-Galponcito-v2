@@ -1,0 +1,104 @@
+
+.deliveryForm {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+.deliveryOptionsInput {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap; 
+}
+
+
+.deliveryOptionButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+.deliveryOptionButton.active {
+  background-color: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+  transform: scale(1.05);
+}
+
+
+.deliveryOptionButton:hover {
+  background-color: #e0f7e9;
+}
+
+
+.addressInput {
+  margin-top: 15px;
+  text-align: left;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+
+.addressInput input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+@media (max-width: 768px) {
+  .deliveryForm {
+    margin-top: 15px; 
+  }
+
+  .deliveryOptionsInput {
+    gap: 10px; 
+    justify-content: space-around; 
+  }
+
+  .deliveryOptionButton {
+    font-size: 0.9rem; 
+    padding: 8px 15px; 
+  }
+
+  .addressInput {
+    padding: 8px; 
+  }
+
+  .addressInput input {
+    font-size: 0.9rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  .deliveryOptionsInput {
+    flex-direction: column; 
+    gap: 10px; 
+  }
+
+  .deliveryOptionButton {
+    font-size: 0.8rem; 
+    padding: 6px 12px; 
+  }
+
+  .addressInput {
+    margin-top: 10px; 
+    padding: 6px; 
+  }
+
+  .addressInput input {
+    font-size: 0.9rem; 
+  }
+}

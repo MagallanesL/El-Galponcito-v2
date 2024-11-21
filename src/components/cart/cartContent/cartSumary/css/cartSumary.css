@@ -1,0 +1,137 @@
+/* Estilos generales del contenedor */
+.cartDetails {
+  background-color: #fff5e6; /* Color suave para inspirar apetito */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Título de información */
+.cartDetails h3.info-degustar {
+  font-size: 1.5rem;
+  color: #ff7f50; /* Color naranja apetitoso */
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Párrafos dentro del contenedor */
+.cartDetails p {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Lista de productos */
+.cartDetails ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Elementos de la lista de productos */
+.cartDetails li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+/* Estilo para los span dentro de los elementos de la lista */
+.cartDetails li span {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Controles de cantidad */
+.cartDetails .quantity-controls {
+  display: flex;
+  gap: 10px;
+}
+
+/* Estilo para los botones de cantidad */
+.cartDetails .quantity-btn {
+  background-color: #ff7f50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover de los botones de cantidad */
+.cartDetails .quantity-btn:hover {
+  background-color: #ff5722; /* Color más oscuro en hover */
+}
+
+/* Total amount */
+.cartDetails .totalAmount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Estilo para el valor total */
+.cartDetails .totalAmount strong {
+  color: #ff7f50;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .cartDetails {
+    max-width: 90%; /* Hacemos que el contenedor ocupe un mayor porcentaje en pantallas medianas */
+    padding: 15px;
+  }
+
+  .cartDetails h3.info-degustar {
+    font-size: 1.3rem; /* Reducimos el tamaño del título */
+  }
+
+  .cartDetails p {
+    font-size: 1rem; /* Reducimos el tamaño de los párrafos */
+  }
+
+  .cartDetails .quantity-btn {
+    font-size: 0.9rem; /* Reducimos el tamaño de la fuente de los botones */
+    padding: 4px 8px; /* Reducimos el padding de los botones */
+  }
+
+  .cartDetails .totalAmount {
+    font-size: 1.3rem; /* Reducimos el tamaño del total */
+  }
+}
+
+@media (max-width: 480px) {
+  .cartDetails {
+    max-width: 95%; /* Ocupa casi toda la pantalla en dispositivos pequeños */
+    padding: 10px;
+  }
+
+  .cartDetails h3.info-degustar {
+    font-size: 1.1rem; /* Reducimos aún más el tamaño del título */
+  }
+
+  .cartDetails p {
+    font-size: 0.9rem; /* Reducimos el tamaño de los párrafos */
+  }
+
+  .cartDetails li {
+    flex-direction: column; /* Cambiamos la disposición de los elementos de la lista a columna */
+    align-items: flex-start;
+    padding: 8px 0;
+  }
+
+  .cartDetails .quantity-btn {
+    font-size: 0.8rem; /* Reducimos aún más el tamaño de la fuente de los botones */
+    padding: 3px 6px; /* Reducimos el padding de los botones */
+  }
+
+  .cartDetails .totalAmount {
+    font-size: 1.2rem; /* Reducimos el tamaño del total */
+  }
+}

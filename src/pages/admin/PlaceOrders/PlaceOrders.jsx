@@ -90,22 +90,27 @@ const PlaceOrders = () => {
   const updateStockOnOrder = async (orderId) => {
     try {
       const orderDocRef = doc(db, 'Pedidos', orderId);
-      const orderSnapshot = await getDocs(orderDocRef);
+      const orderSnapshot = await getDoc(orderDocRef);  
       const order = orderSnapshot.data();
-
+  
       if (order && order.items) {
         for (const item of order.items) {
           const itemId = item.id;  // El ID del producto en stock
-          const itemQuantity = item.quantity;  // La cantidad del producto en el pedido
-
-          
+          const itemQuantity = item.quantity;  
+  
           const stockDocRef = doc(db, 'Stock', itemId);
-          const stockSnapshot = await getDocs(stockDocRef);
+          const stockSnapshot = await getDoc(stockDocRef);  // Cambié getDocs por getDoc aquí
           const stockData = stockSnapshot.data();
-
+  
           if (stockData) {
             const updatedQuantity = stockData.quantity - itemQuantity;
-
+  
+            // Verifica si hay suficiente stock
+            if (updatedQuantity < 0) {
+              console.error(`No hay suficiente stock para el producto ${itemId}`);
+              return;  
+            }
+  
             // Actualizar el stock
             await updateDoc(stockDocRef, { quantity: updatedQuantity });
             console.log(`Stock actualizado para el producto ${itemId}: nueva cantidad ${updatedQuantity}`);
@@ -116,6 +121,7 @@ const PlaceOrders = () => {
       console.error("Error al actualizar el stock:", error);
     }
   };
+  
 
   const handleStatusChange = (orderId, newStatus) => {
     setFilteredOrders((prevOrders) =>
@@ -166,7 +172,7 @@ const PlaceOrders = () => {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-                  {order.orderNumber} # Pedido de - <strong>{order.userName}</strong> - Total: ${order.totalAmount}
+                  {order.orderNumber} # Pedido de: <strong>{order.userName}</strong> - Total: ${order.totalAmount}
                 </Accordion.Header>
                 <Accordion.Body>
                   <p><strong>Teléfono:</strong> {order.userPhone}</p>

@@ -6,6 +6,8 @@ import DashBoardAdmin from '../dashboard/DashboardAdmin';
 import './placeorders.css';
 
 const orderCollection = collection(db, 'Pedidos');
+const stockCollection = collection(db, 'Stock'); // Colección de stock
+
 const PlaceOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -40,7 +42,7 @@ const PlaceOrders = () => {
           const orderHour = orderDate.getHours();
           const orderDay = orderDate.toLocaleDateString();
 
-          const isInBusinessHours = (orderHour >= 13 && orderHour <= 23) || orderHour < 2;
+          const isInBusinessHours = (orderHour >= 11 && orderHour < 24) || (orderHour < 2);
           const isToday = orderDay === new Date().toLocaleDateString();
 
           return isToday && isInBusinessHours;
@@ -76,8 +78,42 @@ const PlaceOrders = () => {
       const orderDocRef = doc(db, 'Pedidos', orderId);
       await updateDoc(orderDocRef, { status: newStatus });
       console.log(`Estado del pedido ${orderId} actualizado a: ${newStatus}`);
+
+      if (newStatus === 'Enviado') {
+        await updateStockOnOrder(orderId); // Llamamos a la función para restar el stock
+      }
     } catch (error) {
       console.error("Error al actualizar el estado del pedido:", error);
+    }
+  };
+
+  const updateStockOnOrder = async (orderId) => {
+    try {
+      const orderDocRef = doc(db, 'Pedidos', orderId);
+      const orderSnapshot = await getDocs(orderDocRef);
+      const order = orderSnapshot.data();
+
+      if (order && order.items) {
+        for (const item of order.items) {
+          const itemId = item.id;  // El ID del producto en stock
+          const itemQuantity = item.quantity;  // La cantidad del producto en el pedido
+
+          
+          const stockDocRef = doc(db, 'Stock', itemId);
+          const stockSnapshot = await getDocs(stockDocRef);
+          const stockData = stockSnapshot.data();
+
+          if (stockData) {
+            const updatedQuantity = stockData.quantity - itemQuantity;
+
+            // Actualizar el stock
+            await updateDoc(stockDocRef, { quantity: updatedQuantity });
+            console.log(`Stock actualizado para el producto ${itemId}: nueva cantidad ${updatedQuantity}`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error al actualizar el stock:", error);
     }
   };
 
@@ -113,7 +149,6 @@ const PlaceOrders = () => {
             <Card key={order.id}>
               <Accordion.Item eventKey={String(index)}>
                 <Accordion.Header>
-                  {/* Aquí utilizamos directamente el Dropdown y evitamos el botón extra */}
                   <Dropdown>
                     <Dropdown.Toggle variant="secondary" id={`dropdown-status-${order.id}`} className={`mr-2 ${getStatusClass(order.status)}`}>
                       {order.status || 'Pendiente'}

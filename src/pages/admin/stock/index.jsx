@@ -1,54 +1,35 @@
-import React, { useState, useEffect } from 'react'
-import { getDocs, collection, query, orderBy, limit } from 'firebase/firestore'
-import DashBoardAdmin from '../dashboard/DashboardAdmin'
-import { db } from '../../../firebase/firebaseconfig'
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase/firebaseconfig'; 
 
-import './Stock.css' 
 
-const Stock = () => {
-  const [stock, setStock] = useState(null)
+const updateStockAfterOrder = async (order) => {
+  try {
+    // Para cada item del pedido
+    for (const item of order.items) {
+      const productId = item.id;
+      const quantityOrdered = item.quantity;
 
-  useEffect(() => {
-    const fetchStock = async () => {
-      try {
-        const stockQuery = query(
-          collection(db, 'Stock'),
-          orderBy('createdAt', 'desc'),
-          limit(1)
-        )
+      // Buscar el producto en la colección de productos
+      const productRef = doc(db, 'Productos', productId);
+      const productSnapshot = await getDoc(productRef);
 
-        const data = await getDocs(stockQuery)
-        const stockData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      if (productSnapshot.exists()) {
+        const productData = productSnapshot.data();
+        const currentStock = productData.stock; // Asegúrate de que 'stock' sea el campo correcto en tu colección de productos
 
-        if (stockData.length > 0) {
-          setStock(stockData[0])
+        if (currentStock >= quantityOrdered) {
+          // Actualizar el stock
+          const newStock = currentStock - quantityOrdered;
+          await updateDoc(productRef, { stock: newStock });
+          console.log(`Stock actualizado para el producto ${productData.name}: ${newStock} unidades restantes.`);
         } else {
-          setStock(null)
+          console.log(`No hay suficiente stock para el producto ${item.name}.`);
         }
-      } catch (error) {
-        console.error('Error al obtener el stock:', error)
+      } else {
+        console.log(`Producto con id ${productId} no encontrado.`);
       }
     }
-
-    fetchStock()
-  }, [])
-
-  return (
-    <div>
-          <DashBoardAdmin/>
-    <div className="stock-container">
-      <h2 className="stock-title">Último Stock Registrado</h2>
-      {stock ? (
-        <div className="stock-details">
-          <p className="stock-date">Fecha: <span>{stock.date}</span></p>
-          <p className="stock-quantity">Cantidad: <span>{stock.quantity}</span></p>
-        </div>
-      ) : (
-        <p className="no-stock">No se encontró stock.</p>
-      )}
-    </div>
-      </div>
-  )
-}
-
-export default Stock
+  } catch (error) {
+    console.error("Error al actualizar el stock:", error);
+  }
+};

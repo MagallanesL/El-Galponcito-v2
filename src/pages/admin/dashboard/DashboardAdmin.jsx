@@ -4,6 +4,7 @@ import { FaPizzaSlice, FaListAlt, FaMapMarkedAlt, FaShoppingCart, FaChartBar } f
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { GiTabletopPlayers } from "react-icons/gi";
 import { TbReportSearch } from "react-icons/tb";
+import StockDiary from '../dashboard/addStock/addStock'
 import './dashboardadmin.css'
 
 const DashboardAdmin = () => {
@@ -12,6 +13,7 @@ const DashboardAdmin = () => {
       <Nav variant="tabs" className="nav-tabs" defaultActiveKey="/nuevoproducto">
         <Nav.Item>
           <Nav.Link as={NavLink} to="/clients">
+         
             <RiMoneyDollarCircleLine style={{ marginRight: "8px" }} />
             Atencion
           </Nav.Link>
@@ -59,6 +61,8 @@ const DashboardAdmin = () => {
        </Nav.Link>
         </Nav.Item>
       </Nav>
+
+      <StockDiary/>
     </div>
   );
 };

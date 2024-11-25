@@ -56,7 +56,7 @@ const filteredProducts = products.filter((product) => {
         />
       </div>
       <div className="categoryMenu">
-        <button onClick={() => setCategory('all')}>Todos</button>
+        {/* <button onClick={() => setCategory('all')}>Todos</button> */}
         <button onClick={() => setCategory('pizza')}>Pizzas</button>
         <button onClick={() => setCategory('sandwich')}>Sandwiches</button>
         <button onClick={() => setCategory('1/2 y 1/2')}>Media y Media</button>

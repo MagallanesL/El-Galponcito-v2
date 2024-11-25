@@ -42,12 +42,12 @@ const DashboardAdmin = () => {
             Pedidos
           </Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link as={NavLink} to="/reports">
             <FaChartBar style={{ marginRight: "8px" }} />
             Reportes
           </Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
         <Nav.Item>
           <Nav.Link as={NavLink} to="/stock">
             <TbReportSearch style={{ marginRight: "8px" }} />

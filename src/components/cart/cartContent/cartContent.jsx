@@ -52,7 +52,7 @@ const CartContent = () => {
 
   const decreaseQuantity = (id) => {
     
-    console.log("CartItems before decrease:", cartItems);
+  
   
   
     const updatedItems = cartItems

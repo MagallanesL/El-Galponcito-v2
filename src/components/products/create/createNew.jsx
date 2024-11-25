@@ -77,7 +77,7 @@ const CreateNew = () => {
                 value={category}
                 onChange={(e) => {
                   const selectedValue = e.target.value.trim();
-                  console.log("Valor seleccionado:", selectedValue); // Depuración
+                 
                   setCategory(selectedValue);
                 }}
                 required

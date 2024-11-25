@@ -40,10 +40,10 @@ const AddStock = () => {
           },
         }).then(async (result) => {
           if (result.isConfirmed && result.value) {
-            // Crear un nuevo documento con `quantity` y `createdAt`
+            
             await addDoc(stockCollectionRef, { 
               quantity: parseInt(result.value, 10), 
-              createdAt: Timestamp.now(), // Guardar como timestamp
+              createdAt: Timestamp.now(), 
             });
             Swal.fire('Stock creado', `Se registró ${result.value} como stock para hoy.`, 'success');
           }
@@ -61,7 +61,7 @@ const AddStock = () => {
     checkAndHandleStock();
   }, []);
 
-  return <div>Añadir Stock</div>;
+  return ;
 };
 
 export default AddStock;

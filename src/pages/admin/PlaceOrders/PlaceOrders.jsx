@@ -27,7 +27,7 @@ const PlaceOrders = () => {
       const data = await getDocs(orderCollectionRef);
       const ordersData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-      console.log("Datos obtenidos de Firestore:", ordersData);
+      
       setOrders(ordersData);
 
       const filtered = ordersData.filter((order) => {
@@ -42,7 +42,7 @@ const PlaceOrders = () => {
           const orderHour = orderDate.getHours();
           const orderDay = orderDate.toLocaleDateString();
 
-          const isInBusinessHours = (orderHour >= 11 && orderHour < 24) || (orderHour < 2);
+          const isInBusinessHours = (orderHour >= 10 && orderHour < 24) || (orderHour < 2);
           const isToday = orderDay === new Date().toLocaleDateString();
 
           return isToday && isInBusinessHours;

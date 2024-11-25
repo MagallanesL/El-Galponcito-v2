@@ -1,4 +1,4 @@
-/* Contenedor principal */
+
 .view-clients-container {
   display: flex;
   flex-direction: column;
@@ -6,17 +6,17 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
-  background-image: url('https://www.example.com/path/to/your-image.jpg'); /* URL de la imagen de fondo */
+  background-image: url('https://www.example.com/path/to/your-image.jpg'); 
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Para que el fondo no se mueva al hacer scroll */
-  min-height: 100vh; /* Asegura que el contenedor tenga la altura completa */
-  color: #fff; /* Texto claro para contrastar con el fondo */
+  background-attachment: fixed; 
+  min-height: 100vh; 
+  color: #fff; 
   position: relative;
 }
 
-/* Fondo oscuro semitransparente para mejorar el contraste de texto */
+
 .view-clients-container::before {
   content: "";
   position: absolute;
@@ -24,7 +24,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Fondo oscuro con opacidad */
+  background: rgba(0, 0, 0, 0.4); 
   z-index: -1; /* Ponerlo detrás del contenido */
 }
 

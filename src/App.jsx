@@ -9,7 +9,9 @@ import PlaceOrders from './pages/admin/PlaceOrders/PlaceOrders';
 import Reports from './pages/admin/reports/reports';
 import Stock from './pages/admin/stock/index';
 import Table from './pages/admin/table/index';
+import ProductTable from "./pages/admin/showproducttable/index";
 import ViewClients from './pages/client/ViewClients';
+import Drinks from './pages/admin/drinks/drinks';
 import { CartProvider } from './context/dataContext';
 import { AuthProvider } from './context/authcontext';
 import ProtectedRoute from './routes/protectedRoute';
@@ -75,6 +77,16 @@ function App() {
             <Route path="/table" element={
               <ProtectedRoute adminEmail={adminEmail}>
                 <Table />
+              </ProtectedRoute>
+            } />
+            <Route path="/producttable" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <ProductTable />
+              </ProtectedRoute>
+            } />
+            <Route path="/drinks" element={
+              <ProtectedRoute adminEmail={adminEmail}>
+                <Drinks />
               </ProtectedRoute>
             } />
           </Routes>

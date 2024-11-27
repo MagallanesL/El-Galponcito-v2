@@ -10,7 +10,7 @@ const CreateNew = () => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
-  const productsCollection = collection(db, 'productos');
+  const productsCollection = collection(db, 'productosmesa');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,6 +86,7 @@ const CreateNew = () => {
                 <option value="pizza">Pizza</option>
                 <option value="sandwich">Sándwich</option>
                 <option value="1/2 y 1/2">Media y Media</option>
+                <option value="bebidas">Bebidas</option>
               </select>
 
             </div>

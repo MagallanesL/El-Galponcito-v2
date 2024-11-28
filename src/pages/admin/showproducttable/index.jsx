@@ -4,6 +4,7 @@ import { db } from '../../../firebase/firebaseconfig';
 import Swal from 'sweetalert2';
 import { SlLike, SlDislike } from "react-icons/sl";
 import { MdDeleteForever, MdEditRoad } from "react-icons/md";
+import DashBoardAdmin from '../dashboard/DashboardAdmin'
 import './index.css';
 
 const Productmesa = () => {
@@ -83,6 +84,8 @@ const Productmesa = () => {
   );
 
   return (
+    <>
+    <DashBoardAdmin/>
     <div className="productsContainer">
       <h2 className="productsTitle">Lista de Productos</h2>
 
@@ -92,7 +95,7 @@ const Productmesa = () => {
           placeholder="Buscar productos..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          />
       </div>
 
       <table className="table">
@@ -111,10 +114,10 @@ const Productmesa = () => {
               <td>
                 {editProductId === product.id ? (
                   <input
-                    type="text"
-                    name="name"
-                    value={editedProduct.name || ''}
-                    onChange={handleInputChange}
+                  type="text"
+                  name="name"
+                  value={editedProduct.name || ''}
+                  onChange={handleInputChange}
                   />
                 ) : (
                   product.name
@@ -123,10 +126,10 @@ const Productmesa = () => {
               <td>
                 {editProductId === product.id ? (
                   <input
-                    type="text"
-                    name="description"
-                    value={editedProduct.description || ''}
-                    onChange={handleInputChange}
+                  type="text"
+                  name="description"
+                  value={editedProduct.description || ''}
+                  onChange={handleInputChange}
                   />
                 ) : (
                   product.description
@@ -135,10 +138,10 @@ const Productmesa = () => {
               <td>
                 {editProductId === product.id ? (
                   <input
-                    type="text"
-                    name="category"
-                    value={editedProduct.category || ''}
-                    onChange={handleInputChange}
+                  type="text"
+                  name="category"
+                  value={editedProduct.category || ''}
+                  onChange={handleInputChange}
                   />
                 ) : (
                   product.category
@@ -147,10 +150,10 @@ const Productmesa = () => {
               <td>
                 {editProductId === product.id ? (
                   <input
-                    type="number"
-                    name="price"
-                    value={editedProduct.price || ''}
-                    onChange={handleInputChange}
+                  type="number"
+                  name="price"
+                  value={editedProduct.price || ''}
+                  onChange={handleInputChange}
                   />
                 ) : (
                   `$${product.price}`
@@ -177,7 +180,7 @@ const Productmesa = () => {
                     <button 
                       className={`disableButton ${product.disabled ? 'disabled' : ''}`} 
                       onClick={() => handleDisable(product)}
-                    >
+                      >
                       {product.disabled ? <SlDislike /> : <SlLike />}
                     </button>
                   </>
@@ -188,6 +191,7 @@ const Productmesa = () => {
         </tbody>
       </table>
     </div>
+          </>
   );
 };
 

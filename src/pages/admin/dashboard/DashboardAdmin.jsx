@@ -25,7 +25,7 @@ const DashboardAdmin = () => {
         <Nav.Item>
           <Nav.Link as={NavLink} to="/productcreated">
             <FaListAlt style={{ marginRight: "8px" }} />
-            Ver Productos
+            Productos App
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>

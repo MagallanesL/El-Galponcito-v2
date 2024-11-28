@@ -1,0 +1,13 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Asegura que html y body cubran toda la página */
+  }
+  
+  body {
+    background-image: url('./assets/freepik__upload__23546.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100%; /* Permite que la imagen se ajuste al contenido */
+  }
+  

@@ -1,229 +1,185 @@
 .productsContainer {
-    margin: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-image: url('../../../assets/galponcitolocal.jpg');
-    background-size: cover;
-    background-position: center;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-image: url('../../../assets/galponcitolocal.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.productsTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.searchContainer {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.table th {
+  background-color: rgba(244, 244, 244, 0.7);
+  color: #555;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 50%;
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  width: 20%;
+}
+
+.table .buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px; /* Mejora la separación de botones */
+}
+
+.table .editButton,
+.table .deleteButton,
+.table .disableButton {
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  flex-grow: 1;
+  max-width: 120px;
+}
+
+.table .editButton {
+  background-color: #f0ad4e;
+}
+
+.table .deleteButton {
+  background-color: #d9534f;
+}
+
+.table .disableButton {
+  background-color: #07f50f;
+  color: white;
+}
+
+.table .editButton:hover {
+  background-color: #e99c42;
+  transform: scale(1.05);
+}
+
+.table .deleteButton:hover {
+  background-color: #c9302c;
+  transform: scale(1.05);
+}
+
+.table .disableButton:hover {
+  background-color: #0cdb21;
+  transform: scale(1.05);
+}
+
+.disableButton.disabled {
+  background-color: gray;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.inputField {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin: 5px 0;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #07f50f;
+  box-shadow: 0 0 5px rgba(7, 245, 15, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .productsContainer {
+    margin: 10px;
+    padding: 15px;
   }
-  
+
   .productsTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    font-size: 22px;
   }
-  
-  .searchContainer {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .table th, .table td {
+
+  .table th,
+  .table td {
+    font-size: 14px;
     padding: 8px;
-    text-align: center;
-    border: 1px solid #ddd;
-    background-color: rgba(255, 255, 255, 0.397);
   }
-  
-  .table th {
-    background-color: rgba(244, 244, 244, 0.7);
-    color: #555;
-  }
-  
-  .table th:nth-child(2), .table td:nth-child(2) {
-    width: 50%; 
-  }
-  
-  .table th:nth-child(5), .table td:nth-child(5) {
-    width: 20%; 
-  }
-  
-  .table .buttonContainer {
-    display: flex;
-    justify-content: space-between; 
-    width: 100%; 
-  }
-  
+
   .table .editButton,
   .table .deleteButton,
   .table .disableButton {
-    padding: 6px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-align: center;
-    flex-grow: 1; 
-    margin: 0 10px; 
-    max-width: 120px; 
-  }
-  
-  .table .editButton {
-    background-color: #f0ad4e;
-  }
-  
-  .table .deleteButton {
-    background-color: #d9534f;
-  }
-  
-  .table .disableButton {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .table .editButton:hover,
-  .table .deleteButton:hover,
-  .table .disableButton:hover {
-    transform: scale(1.05);
-  }
-  
-  .table .editButton:hover {
-    background-color: #e99c42;
-  }
-  
-  .table .deleteButton:hover {
-    background-color: #c9302c;
-  }
-  
-  .table .disableButton:hover {
-    background-color: #d0d0d0;
-  }
-  
-  .disableButton.disabled {
-    background-color: gray;
-    color: #fff;
-    cursor: not-allowed;
-  }
-  
-  .disableButton:not(.disabled) {
-    background-color: #07f50f;
-  }
-  
-  .inputField {
     width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .table .buttonContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .productsContainer {
+    margin: 5px;
+    padding: 10px;
+  }
+
+  .productsTitle {
+    font-size: 20px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .table .editButton,
+  .table .deleteButton,
+  .table .disableButton {
+    width: 100%;
+    padding: 12px;
     font-size: 14px;
-    margin: 5px 0;
-    background-color: rgba(255, 255, 255, 0.7);
   }
-  
-  .inputField:focus {
-    outline: none;
-    border-color: #07f50f;
-    box-shadow: 0 0 5px rgba(7, 245, 15, 0.5);
+
+  .table .buttonContainer {
+    justify-content: space-between;
+    padding: 5px;
   }
-  
-  .editInput {
-    background-color: rgba(255, 255, 255, 0.8);
-  }
-  
-  .button-edit {
-    background-color: #f0ad4e;
-  }
-  
-  .button-delete {
-    background-color: #d9534f;
-  }
-  
-  .button-disable {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .button-edit:hover {
-    background-color: #e99c42;
-  }
-  
-  .button-delete:hover {
-    background-color: #c9302c;
-  }
-  
-  .button-disable:hover {
-    background-color: #d0d0d0;
-  }
-  
-  .button-disable.disabled {
-    background-color: gray;
-    color: #fff;
-    cursor: not-allowed;
-  }
-  
-  .button-disable:not(.disabled) {
-    background-color: #07f50f;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .productsContainer {
-      margin: 10px;
-      padding: 15px;
-    }
-  
-    .productsTitle {
-      font-size: 22px;
-    }
-  
-    .table th, .table td {
-      font-size: 14px;
-      padding: 8px;
-    }
-  
-    .table .editButton,
-    .table .deleteButton,
-    .table .disableButton {
-      width: 100%;
-      padding: 8px 12px;
-      font-size: 16px;
-      margin: 0 5px;
-    }
-  
-    .table .buttonContainer {
-      flex-direction: column;
-      gap: 10px;
-    }
-  }
-  
-  @media screen and (max-width: 480px) {
-    .productsContainer {
-      margin: 5px;
-      padding: 10px;
-    }
-  
-    .productsTitle {
-      font-size: 20px;
-    }
-  
-    .table th, .table td {
-      font-size: 12px;
-      padding: 6px;
-    }
-  
-    .table .editButton,
-    .table .deleteButton,
-    .table .disableButton {
-      width:80%;
-      padding: 12px 18px;
-      font-size: 18px;
-    }
-  
-    .table .buttonContainer {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px;
-    }
-  }
-  
+}

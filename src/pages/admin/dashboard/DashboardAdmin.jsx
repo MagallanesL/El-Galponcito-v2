@@ -4,10 +4,13 @@ import { FaPizzaSlice, FaListAlt, FaMapMarkedAlt, FaShoppingCart, FaChartBar } f
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { GiTabletopPlayers } from "react-icons/gi";
 import { TbReportSearch } from "react-icons/tb";
+import AddStock from "./addStock/addStock";
 import './dashboardadmin.css';
 
 const DashboardAdmin = () => {
   return (
+    <>
+    <AddStock/>
     <div className="dashboard-container">
       <Nav variant="tabs" className="nav-tabs" defaultActiveKey="/nuevoproducto">
         <Nav.Item>
@@ -56,7 +59,7 @@ const DashboardAdmin = () => {
           <Nav.Link as={NavLink} to="/drinks" >
             <GiTabletopPlayers style={{ marginRight: "8px" }} />
             Bebidas
-          </Nav.Link>
+            </Nav.Link>
         </Nav.Item> */}
         <Nav.Item>
           <Nav.Link as={NavLink} to="/table" disabled>
@@ -66,6 +69,7 @@ const DashboardAdmin = () => {
         </Nav.Item>
       </Nav>
     </div>
+            </>
   );
 };
 

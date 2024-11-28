@@ -3,7 +3,7 @@ import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore
 import { db } from '../../../firebase/firebaseconfig';
 import moment from 'moment-timezone';
 import Swal from 'sweetalert2';
-import './Stock.css';  // Importar el archivo de estilos
+import './stock.css';  
 import DashboardAdmin from '../dashboard/DashboardAdmin';
 
 const Stock = () => {

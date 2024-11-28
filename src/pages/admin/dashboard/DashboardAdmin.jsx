@@ -52,12 +52,12 @@ const DashboardAdmin = () => {
             Stock
           </Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link as={NavLink} to="/drinks" >
             <GiTabletopPlayers style={{ marginRight: "8px" }} />
             Bebidas
           </Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
         <Nav.Item>
           <Nav.Link as={NavLink} to="/table" disabled>
             <GiTabletopPlayers style={{ marginRight: "8px" }} />

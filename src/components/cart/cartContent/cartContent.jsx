@@ -37,11 +37,18 @@ const CartContent = () => {
 
   useEffect(() => {
     const calculateTotal = () => {
-      const totalAmount = cartItems.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+      const totalAmount = cartItems.reduce((acc, item) => {
+        if (item.category === "1/2 y 1/2") {
+          return acc + (item.totalPrice * item.quantity);
+        } else {
+          return acc + (item.price * item.quantity);
+        }
+      }, 0);
       setTotal(totalAmount);
     };
     calculateTotal();
   }, [cartItems]);
+  
 
   const increaseQuantity = (id) => {
     const updatedItems = cartItems.map(item =>
@@ -51,30 +58,20 @@ const CartContent = () => {
   };
 
   const decreaseQuantity = (id) => {
-    
-  
-  
-  
     const updatedItems = cartItems
       .map(item => {
         if (item.id === id && item.quantity > 1) {
-          return { ...item, quantity: item.quantity - 1 }; 
+          return { ...item, quantity: item.quantity - 1 };
         }
         if (item.id === id && item.quantity === 1) {
-          return null;  
+          return null;
         }
-        return item;  
+        return item;
       })
-      .filter(item => item !== null);  
-  
-    console.log("Updated Items after decrease:", updatedItems);
-  
-   
+      .filter(item => item !== null);
     updateCart(updatedItems);
   };
-  
-  
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -8,10 +8,14 @@ const CartSummary = ({ cartItems, total, increaseQuantity, decreaseQuantity }) =
         <p>Tu carrito está vacío... ¡Agrega productos para empezar! 🌟</p>
       ) : (
         <ul>
-          {cartItems.map((item) => (
-            <li key={item.id}>
-              <span>{item.name}</span>
-              <span>${item.price}</span>
+          {cartItems.map((item, index) => (
+            <li key={item.id || index}>
+              <span>
+                {item.category === "1/2 y 1/2"
+                  ? `${item.half1.name} y ${item.half2.name}`
+                  : item.name}
+              </span>
+              <span>${item.totalPrice || item.price}</span>
               <span>x {item.quantity}</span>
               <div className="quantity-controls">
                 <button className="quantity-btn" onClick={() => decreaseQuantity(item.id)}>-</button>

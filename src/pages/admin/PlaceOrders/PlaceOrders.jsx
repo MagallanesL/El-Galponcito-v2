@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot, updateDoc, doc, getDocs, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
-import { Accordion, Card, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import DashBoardAdmin from '../dashboard/DashboardAdmin';
+import OrderCard from './orderCard/orderCard';
 import './placeorders.css';
 
 const orderCollection = collection(db, 'Pedidos');
@@ -80,6 +81,7 @@ const PlaceOrders = () => {
 
       if (newStatus === 'Enviado') {
         await updateStockOnOrder(orderId); // Llamamos a la función para restar el stock
+        printOrder(orderId); // Llamamos a la función para imprimir el pedido
       }
     } catch (error) {
       console.error("Error al actualizar el estado del pedido:", error);
@@ -121,6 +123,72 @@ const PlaceOrders = () => {
     }
   };
 
+  const printOrder = async (orderId) => {
+    try {
+      const orderDocRef = doc(db, 'Pedidos', orderId);
+      const orderSnapshot = await getDoc(orderDocRef);
+      const order = orderSnapshot.data();
+
+      if (order) {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>El Galponcito</title>
+              <style>
+                body { font-family: Arial, sans-serif; }
+                .order-header { text-align: center; margin-bottom: 20px; }
+                .order-details { margin-bottom: 20px; }
+                .order-items { margin-bottom: 20px; }
+                .order-items table { width: 100%; border-collapse: collapse; }
+                .order-items th, .order-items td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                .order-items th { background-color: #f2f2f2; }
+              </style>
+            </head>
+            <body>
+              <div class="order-header">
+                <h1> ¡Gracias por su Compra! </h1>
+              </div>
+              <div class="order-details">
+                <p><strong>Cliente:</strong> ${order.userName}</p>
+                <p><strong>Teléfono:</strong> ${order.userPhone}</p>
+                <p><strong>Dirección:</strong> ${order.address ? order.address : 'Retira en local'}</p>
+              </div>
+              <div class="order-items">
+                <h2>Productos:</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${order.items.map((item) => `
+                      <tr>
+                        <td>${item.category === "1/2 y 1/2" ? `${item.half1.name} y ${item.half2.name}` : item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.totalPrice || item.price}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+              <div class="order-total">
+                <p><strong>Total:</strong> ${order.totalAmount}</p>
+              </div>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+      }
+    } catch (error) {
+      console.error("Error al imprimir el pedido:", error);
+    }
+  };
+
   const handleStatusChange = (orderId, newStatus) => {
     setFilteredOrders((prevOrders) =>
       prevOrders.map((order) =>
@@ -149,47 +217,13 @@ const PlaceOrders = () => {
       <h3>Pedidos {currentDate}</h3>
       <Accordion defaultActiveKey="0">
         {filteredOrders.length > 0 ? (
-          filteredOrders.map((order, index) => (
-            <Card key={order.id}>
-              <Accordion.Item eventKey={String(index)}>
-                <Accordion.Header>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="secondary" id={`dropdown-status-${order.id}`} className={`mr-2 ${getStatusClass(order.status)}`}>
-                      {order.status || 'Pendiente'}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="Pendiente" onClick={() => handleStatusChange(order.id, 'Pendiente')}>
-                        Pendiente
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Cocinando" onClick={() => handleStatusChange(order.id, 'Cocinando')}>
-                        Cocinando
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Enviado" onClick={() => handleStatusChange(order.id, 'Enviado')}>
-                        Enviado
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                  {order.orderNumber} # Pedido de: <strong>{order.userName}</strong> - Total: ${order.totalAmount}
-                </Accordion.Header>
-                <Accordion.Body>
-                  <p><strong>Teléfono:</strong> {order.userPhone}</p>
-                  <p><strong>Dirección:</strong> {order.address ? order.address : 'Retira en local'}</p>
-
-                  <h5>Productos:</h5>
-                  <ul>
-                    {order.items?.map((item, idx) => (
-                      <li key={idx}>
-                        {item.category === "1/2 y 1/2"
-                          ? `${item.half1.name} y ${item.half2.name}`
-                          : item.name}
-                        - {item.quantity} unidad{item.quantity > 1 ? 'es' : ''}
-                      </li>
-                    ))}
-                  </ul>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Card>
+          filteredOrders.map((order) => (
+            <OrderCard
+              key={order.id}
+              order={order}
+              handleStatusChange={handleStatusChange}
+              getStatusClass={getStatusClass}
+            />
           ))
         ) : (
           <p>No hay pedidos para mostrar en este momento.</p>

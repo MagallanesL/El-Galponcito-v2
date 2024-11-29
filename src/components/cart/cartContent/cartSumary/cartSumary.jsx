@@ -26,7 +26,7 @@ const CartSummary = ({ cartItems, total, increaseQuantity, decreaseQuantity }) =
         </ul>
       )}
       <div className="totalAmount">
-        <strong>Total: </strong>${total}
+        <strong>Total: ${total} </strong>
       </div>
     </div>
   );

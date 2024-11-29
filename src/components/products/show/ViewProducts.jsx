@@ -40,8 +40,8 @@ const ViewProducts = () => {
     }
 
     Swal.fire({
-      title: 'Producto agregado',
-      text: `${product.name} ha sido agregado al carrito.`,
+      title: `Elegiste  ${product.name}`,
+      text: `Ahora te lo cocinamos!.`,
       icon: 'success',
       confirmButtonText: 'Continuar'
     });
@@ -61,7 +61,7 @@ const ViewProducts = () => {
       </div>
       <div className="categoryMenu">
         <button onClick={() => setCategory('pizza')}>Pizzas</button>
-        <button onClick={() => setCategory('sandwich')}>Sandwiches</button>
+        <button onClick={() => setCategory('sandwich')}>Sandwichs</button>
         <button onClick={() => setCategory('1/2 y 1/2')}>Media y Media</button>
       </div>
       <div className="productsGrid">
@@ -73,7 +73,7 @@ const ViewProducts = () => {
               <p className="productPrice">${product.price}</p>
               <div className="productButtons">
                 <button onClick={() => handleAddToCart(product)} className="addToCartButton">
-                  Agregar al carrito
+                  Lo quiero!
                 </button>
               </div>
             </div>

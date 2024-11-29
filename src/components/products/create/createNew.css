@@ -1,6 +1,6 @@
-/* Contenedor de fondo exclusivo del componente */
+
 .createNewComponentWrapper {
-  background-image: url('../../../assets/cajavacia.webp');
+  /* background-image: url('../../../assets/cajavacia.webp'); */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

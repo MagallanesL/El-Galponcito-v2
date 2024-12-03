@@ -1,85 +1,103 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, FeatureGroup, Marker, Popup, Polygon } from 'react-leaflet';
+import { EditControl } from 'react-leaflet-draw';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import { db } from '../../../../firebase/firebaseconfig';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 
-const Maps = ({ pois }) => {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC3XXouXHdG915GRpcHKaAmWclocRjSct4",
-    libraries: ["drawing"], // Asegúrate de incluir la biblioteca de dibujo
-  });
-
-  const [rectangles, setRectangles] = useState([]);
-  const mapRef = useRef(null);
-  const drawingManagerRef = useRef(null);
+const Maps = () => {
+  const position = [-33.6783, -65.4608]; // Coordenadas de Villa Mercedes, San Luis, Argentina
+  const [zones, setZones] = useState([]);
 
   useEffect(() => {
-    if (isLoaded && mapRef.current) {
-      const map = mapRef.current;
-      const drawingManager = new window.google.maps.drawing.DrawingManager({
-        drawingMode: window.google.maps.drawing.OverlayType.RECTANGLE,
-        drawingControl: true,
-        drawingControlOptions: {
-          position: window.google.maps.ControlPosition.TOP_CENTER,
-          drawingModes: [window.google.maps.drawing.OverlayType.RECTANGLE],
+    const fetchZones = async () => {
+      const querySnapshot = await getDocs(collection(db, 'deliveryZones'));
+      const zonesData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setZones(zonesData);
+    };
+
+    fetchZones();
+  }, []);
+
+  const _onCreated = async (e) => {
+    const layer = e.layer;
+    const shape = layer.toGeoJSON();
+
+    const centroid = calculateCentroid(shape.geometry.coordinates[0]);
+
+    const flattenedCoordinates = shape.geometry.coordinates[0].map(coord => ({
+      lat: coord[1],
+      lng: coord[0],
+    }));
+
+    const zoneName = `Zona ${zones.length + 1}`;
+
+    // Guardar la zona en Firebase
+    try {
+      const docRef = await addDoc(collection(db, 'deliveryZones'), {
+        name: zoneName,
+        shape: {
+          type: shape.type,
+          coordinates: flattenedCoordinates,
         },
-        rectangleOptions: {
-          strokeColor: '#0c4cb3',
-          strokeOpacity: 1,
-          strokeWeight: 3,
-          fillColor: '#3b82f6',
-          fillOpacity: 0.3,
-        },
+        centroid,
+        cost: 0,
       });
 
-      drawingManager.setMap(map);
-      drawingManagerRef.current = drawingManager;
+      // Agregar la zona y su centroide al estado
+      setZones((prevZones) => [
+        ...prevZones,
+        { id: docRef.id, name: zoneName, shape: { type: shape.type, coordinates: flattenedCoordinates }, centroid, cost: 0 },
+      ]);
 
-      window.google.maps.event.addListener(drawingManager, 'rectanglecomplete', (rectangle) => {
-        setRectangles((current) => [...current, rectangle]);
-      });
+      console.log('Zona guardada en Firebase con ID:', docRef.id);
+    } catch (error) {
+      console.error('Error al guardar la zona en Firebase:', error);
     }
-  }, [isLoaded]);
-
-  if (!isLoaded) return <div>Loading...</div>;
-
-  const handleMapLoad = (map) => {
-    // Se ejecuta cuando el mapa se carga completamente
-    console.log('Centro del mapa:', map.getCenter().toJSON());
-    mapRef.current = map;
   };
 
-  const handleMapClick = (e) => {
-    // Captura las coordenadas al hacer clic en el mapa
-    const lat = e.latLng.lat();
-    const lng = e.latLng.lng();
-    console.log(`Coordenadas clickeadas: Latitud ${lat}, Longitud ${lng}`);
+  const calculateCentroid = (coordinates) => {
+    const x = coordinates.reduce((sum, coord) => sum + coord[0], 0) / coordinates.length;
+    const y = coordinates.reduce((sum, coord) => sum + coord[1], 0) / coordinates.length;
+    return [y, x]; // Leaflet usa [lat, lng]
   };
 
   return (
-    <GoogleMap
-      mapContainerStyle={{ width: '100vw', height: '100vh' }}
-      center={{ lat: -33.6744, lng: -65.4578 }}
-      zoom={13}
-      onLoad={handleMapLoad}
-      onClick={handleMapClick}
-    >
-      {rectangles.map((rectangle, index) => (
-        <div key={index}>
-          <Rectangle
-            bounds={rectangle.getBounds().toJSON()}
-            options={{
-              strokeColor: '#0c4cb3',
-              strokeOpacity: 1,
-              strokeWeight: 3,
-              fillColor: '#3b82f6',
-              fillOpacity: 0.3,
-            }}
-          />
-        </div>
-      ))}
-      {pois && pois.map((poi) => (
-        <Marker key={poi.key} position={poi.location} />
-      ))}
-    </GoogleMap>
+    <MapContainer center={position} zoom={13} style={{ height: "100vh", width: "100%" }}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      <FeatureGroup>
+        <EditControl
+          position="topright"
+          onCreated={_onCreated}
+          draw={{
+            rectangle: false,
+            polyline: false,
+            circle: false,
+            circlemarker: false,
+            marker: false,
+          }}
+        />
+        {zones.map((zone) => (
+          <React.Fragment key={zone.id}>
+            {zone.shape && zone.shape.coordinates && (
+              <Polygon positions={zone.shape.coordinates.map(coord => [coord.lat, coord.lng])} />
+            )}
+            <Marker position={zone.centroid}>
+              <Popup>
+                {zone.name}
+              </Popup>
+            </Marker>
+          </React.Fragment>
+        ))}
+      </FeatureGroup>
+    </MapContainer>
   );
 };
 

@@ -34,7 +34,7 @@ const DashboardAdmin = () => {
         <Nav.Item>
           <Nav.Link as={NavLink} to="/zona">
             <FaMapMarkedAlt style={{ marginRight: "8px" }} />
-            Zonas
+            Mapa
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
@@ -62,9 +62,9 @@ const DashboardAdmin = () => {
             </Nav.Link>
         </Nav.Item> */}
         <Nav.Item>
-          <Nav.Link as={NavLink} to="/table" disabled>
+          <Nav.Link as={NavLink} to="/deliverys" >
             <GiTabletopPlayers style={{ marginRight: "8px" }} />
-            Mesas
+            Delivery
           </Nav.Link>
         </Nav.Item>
       </Nav>

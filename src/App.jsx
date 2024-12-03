@@ -11,7 +11,7 @@ import Stock from './pages/admin/stock/index';
 import Table from './pages/admin/table/index';
 import ProductTable from "./pages/admin/showproducttable/index";
 import ViewClients from './pages/client/ViewClients';
-import Drinks from './pages/admin/drinks/drinks';
+import Deliverys from './pages/admin/Zone/deliverysCost/index'
 import { CartProvider } from './context/dataContext';
 import { AuthProvider } from './context/authcontext';
 import ProtectedRoute from './routes/protectedRoute';
@@ -84,9 +84,9 @@ function App() {
                 <ProductTable />
               </ProtectedRoute>
             } />
-            <Route path="/drinks" element={
+            <Route path="/deliverys" element={
               <ProtectedRoute adminEmail={adminEmail}>
-                <Drinks />
+                <Deliverys />
               </ProtectedRoute>
             } />
           </Routes>

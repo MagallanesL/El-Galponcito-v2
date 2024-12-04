@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore'; 
+import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseconfig';
 import moment from 'moment-timezone';
 import Swal from 'sweetalert2';
-import './stock.css';  
+import './stock.css';
 import DashboardAdmin from '../dashboard/DashboardAdmin';
 
 const Stock = () => {
@@ -15,25 +15,25 @@ const Stock = () => {
       try {
         const stockCollectionRef = collection(db, 'Stock');
         const stockSnapshot = await getDocs(stockCollectionRef);
-        
+
         const stockList = stockSnapshot.docs.map(doc => {
           const data = doc.data();
           return {
-            id: doc.id, 
-            quantity: data.quantity, 
+            id: doc.id,
+            quantity: data.quantity,
             createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt), // Convertir a Date correctamente
           };
         });
 
-        const today = moment().startOf('day'); 
+        const today = moment().startOf('day');
 
         const stockForToday = stockList.filter(item => {
           const createdAtLocal = moment(item.createdAt).tz('America/Argentina/Buenos_Aires', true);
-          return createdAtLocal.isSameOrAfter(today); 
+          return createdAtLocal.isSameOrAfter(today);
         });
 
         stockForToday.sort((a, b) => b.createdAt - a.createdAt);
-        setStockData(stockForToday); 
+        setStockData(stockForToday);
       } catch (error) {
         console.error("Error al obtener el stock:", error);
       }
@@ -44,7 +44,7 @@ const Stock = () => {
         const ordersCollectionRef = collection(db, 'Pedidos');
         const q = query(ordersCollectionRef, where('status', '==', 'Enviado'));
         const ordersSnapshot = await getDocs(q);
-        
+
         const ordersList = ordersSnapshot.docs.map(doc => doc.data());
         setOrdersData(ordersList);
       } catch (error) {
@@ -57,12 +57,17 @@ const Stock = () => {
   }, []);
 
   const calculateStock = () => {
-    let totalSold = 0;   
+    let totalSold = 0;
+    const today = moment().startOf('day');
+
     ordersData.forEach(order => {
       if (order.status === "Enviado") {
-        order.items.forEach(item => {
-          totalSold += item.quantity; 
-        });
+        const orderDate = moment(order.timestamp).tz('America/Argentina/Buenos_Aires', true);
+        if (orderDate.isSameOrAfter(today)) {
+          order.items.forEach(item => {
+            totalSold += item.quantity;
+          });
+        }
       }
     });
 
@@ -95,7 +100,11 @@ const Stock = () => {
             <p><span>Stock del día:</span> {stockData.reduce((total, item) => total + item.quantity, 0)}</p>
             <p><span>Unidades vendidas:</span> {ordersData.reduce((total, order) => {
               if (order.status === "Enviado") {
-                return total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0);
+                const orderDate = moment(order.timestamp).tz('America/Argentina/Buenos_Aires', true);
+                const today = moment().startOf('day');
+                if (orderDate.isSameOrAfter(today)) {
+                  return total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0);
+                }
               }
               return total;
             }, 0)}</p>

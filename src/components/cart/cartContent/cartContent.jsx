@@ -20,7 +20,7 @@ const CartContent = () => {
   const [address, setAddress] = useState("");
   const [methodPayment, setMethodPayment] = useState("efectivo");
   const [isAddressValid, setIsAddressValid] = useState(true);
-  const [deliveryCost, setDeliveryCost] = useState(null);
+  const [deliveryCost, setDeliveryCost] = useState(0); // Inicializa deliveryCost en 0
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +49,6 @@ const CartContent = () => {
     };
     calculateTotal();
   }, [cartItems]);
-
 
   const increaseQuantity = (id) => {
     const updatedItems = cartItems.map(item =>
@@ -82,11 +81,12 @@ const CartContent = () => {
       userEmail: userData.email,
       userPhone: userData.telefono,
       items: cartItems,
-      totalAmount: total,
+      totalAmount: total + deliveryCost, // Incluye el deliveryCost en el total
       deliveryOption: deliveryOption,
       address: address,
       methodPayment: methodPayment,
       timestamp: new Date().toISOString(),
+      deliveryCost: deliveryCost // Incluye el deliveryCost en el objeto order
     };
 
     const orderRef = doc(db, "Pedidos", user.uid + "_" + new Date().toISOString());
@@ -122,9 +122,7 @@ const CartContent = () => {
   return (
     <div className="cartContainer">
       <div className="cartForm">
-
-
-      <CartSummary
+        <CartSummary
           cartItems={cartItems}
           total={total}
           deliveryCost={deliveryCost}
@@ -140,8 +138,6 @@ const CartContent = () => {
           setIsAddressValid={setIsAddressValid}
           setDeliveryCost={setDeliveryCost}
         />
-       
-        
         <PaymentForm
           methodPayment={methodPayment}
           setMethodPayment={setMethodPayment}

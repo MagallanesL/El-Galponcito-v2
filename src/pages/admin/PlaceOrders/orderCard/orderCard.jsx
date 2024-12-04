@@ -23,10 +23,11 @@ const OrderCard = ({ order, handleStatusChange, getStatusClass }) => {
             </Dropdown.Menu>
           </Dropdown>
           {order.orderNumber} # Pedido de: <strong>{order.userName}</strong> - Total: ${order.totalAmount}
+          
         </Accordion.Header>
         <Accordion.Body>
           <p><strong>Teléfono:</strong> {order.userPhone}</p>
-          <p><strong>Dirección:</strong> {order.address ? order.address : 'Retira en local'}</p>
+          <p><strong>Dirección:</strong> {order.address ?  order.address.split(',')[0] : 'Retira en local'}</p>
           <h5>Productos:</h5>
           <ul>
             {order.items?.map((item, idx) => (

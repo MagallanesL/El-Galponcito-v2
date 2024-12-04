@@ -128,7 +128,7 @@ const PlaceOrders = () => {
       const orderDocRef = doc(db, 'Pedidos', orderId);
       const orderSnapshot = await getDoc(orderDocRef);
       const order = orderSnapshot.data();
-
+  
       if (order) {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
@@ -136,26 +136,60 @@ const PlaceOrders = () => {
             <head>
               <title>El Galponcito</title>
               <style>
-                body { font-family: Arial, sans-serif; }
-                .order-header { text-align: center; margin-bottom: 20px; }
-                .order-details { margin-bottom: 20px; }
-                .order-items { margin-bottom: 20px; }
-                .order-items table { width: 100%; border-collapse: collapse; }
-                .order-items th, .order-items td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                .order-items th { background-color: #f2f2f2; }
+                body {
+                  font-family: Arial, sans-serif;
+                  font-size: 12px;
+                  width: 58mm;
+                  margin: 0;
+                  padding: 0;
+                }
+                .order-header {
+                  text-align: center;
+                  margin-bottom: 10px;
+                }
+                .order-details {
+                  margin-bottom: 10px;
+                }
+                .order-items {
+                  margin-bottom: 10px;
+                }
+                .order-items table {
+                  width: 100%;
+                  border-collapse: collapse;
+                }
+                .order-items th, .order-items td {
+                  border: 1px solid #ddd;
+                  padding: 4px;
+                  text-align: left;
+                }
+                .order-items th {
+                  background-color: #f2f2f2;
+                }
+                .order-total, .order-delivery {
+                  text-align: right;
+                }
+                .centered {
+                  text-align: center;
+                }
+                .logo {
+                  display: block;
+                  margin: 0 auto;
+                  width: 50px; /* Ajusta el tamaño según sea necesario */
+                  height: auto;
+                }
               </style>
             </head>
             <body>
               <div class="order-header">
-                <h1> ¡Gracias por su Compra! </h1>
+                <img src="../../../assets/LOGO EN ROJO.png" alt="El Galponcito" class="logo" />
               </div>
               <div class="order-details">
                 <p><strong>Cliente:</strong> ${order.userName}</p>
                 <p><strong>Teléfono:</strong> ${order.userPhone}</p>
-                <p><strong>Dirección:</strong> ${order.address ? order.address : 'Retira en local'}</p>
+                <p><strong>Dirección:</strong> ${order.address ? order.address.split(',')[0] : 'Retira en local'}</p>
               </div>
               <div class="order-items">
-                <h2>Productos:</h2>
+                <h3 class="centered">Productos:</h3>
                 <table>
                   <thead>
                     <tr>
@@ -175,6 +209,9 @@ const PlaceOrders = () => {
                   </tbody>
                 </table>
               </div>
+              <div class="order-delivery">
+                <p><strong>Costo de Envío:</strong> ${order.deliveryCost ? order.deliveryCost : '0'}</p>
+              </div>
               <div class="order-total">
                 <p><strong>Total:</strong> ${order.totalAmount}</p>
               </div>
@@ -188,6 +225,8 @@ const PlaceOrders = () => {
       console.error("Error al imprimir el pedido:", error);
     }
   };
+  
+  
 
   const handleStatusChange = (orderId, newStatus) => {
     setFilteredOrders((prevOrders) =>

@@ -11,13 +11,13 @@ import Stock from './pages/admin/stock/index';
 import Table from './pages/admin/table/index';
 import ProductTable from "./pages/admin/showproducttable/index";
 import ViewClients from './pages/client/ViewClients';
-import Deliverys from './pages/admin/Zone/deliverysCost/index'
+import Deliverys from './pages/admin/Zone/deliverysCost/index';
 import { CartProvider } from './context/dataContext';
 import { AuthProvider } from './context/authcontext';
 import ProtectedRoute from './routes/protectedRoute';
 
 function App() {
-  const adminEmail = "admin@elgalponcito.com";  
+  const adminEmail = "admin@elgalponcito.com";
 
   return (
     <AuthProvider>
@@ -26,7 +26,7 @@ function App() {
           <Routes>
             {/* Ruta pública */}
             <Route path='/' element={<Login />} />
-                        
+
             <Route path="/clients" element={
               <ProtectedRoute>
                 <ViewClients />

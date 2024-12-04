@@ -20,6 +20,7 @@ const CartContent = () => {
   const [address, setAddress] = useState("");
   const [methodPayment, setMethodPayment] = useState("efectivo");
   const [isAddressValid, setIsAddressValid] = useState(true);
+  const [deliveryCost, setDeliveryCost] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const CartContent = () => {
     };
     calculateTotal();
   }, [cartItems]);
-  
+
 
   const increaseQuantity = (id) => {
     const updatedItems = cartItems.map(item =>
@@ -121,9 +122,12 @@ const CartContent = () => {
   return (
     <div className="cartContainer">
       <div className="cartForm">
-        <CartSummary
+
+
+      <CartSummary
           cartItems={cartItems}
           total={total}
+          deliveryCost={deliveryCost}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
@@ -133,7 +137,11 @@ const CartContent = () => {
           address={address}
           setAddress={setAddress}
           isAddressValid={isAddressValid}
+          setIsAddressValid={setIsAddressValid}
+          setDeliveryCost={setDeliveryCost}
         />
+       
+        
         <PaymentForm
           methodPayment={methodPayment}
           setMethodPayment={setMethodPayment}

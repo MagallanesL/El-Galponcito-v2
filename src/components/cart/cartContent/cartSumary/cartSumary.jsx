@@ -1,6 +1,14 @@
 import React from "react";
 
-const CartSummary = ({ cartItems, total, increaseQuantity, decreaseQuantity }) => {
+const CartSummary = ({ cartItems, total, deliveryCost, increaseQuantity, decreaseQuantity }) => {
+  // Calcular el total incluyendo el costo del delivery
+  const totalWithDelivery = total + (deliveryCost || 0);
+
+  // Crear un item de delivery si hay un costo de envío
+  const deliveryItem = deliveryCost
+    ? { id: 'delivery', name: 'Delivery', price: deliveryCost, quantity: 1 }
+    : null;
+
   return (
     <div className="cartDetails">
       <h3 className="info-degustar">¡Veamos con qué te vas a degustar hoy!</h3>
@@ -23,10 +31,17 @@ const CartSummary = ({ cartItems, total, increaseQuantity, decreaseQuantity }) =
               </div>
             </li>
           ))}
+          {deliveryItem && (
+            <li key={deliveryItem.id}>
+              <span>{deliveryItem.name}</span>
+              <span>${deliveryItem.price.toFixed(2)}</span>
+              <span>x {deliveryItem.quantity}</span>
+            </li>
+          )}
         </ul>
       )}
       <div className="totalAmount">
-        <strong>Total: ${total} </strong>
+        <strong>Total: ${totalWithDelivery.toFixed(2)} </strong>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../../../firebase/firebaseconfig';
 import { collection, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import AdminDashboard from '../../dashboard/DashboardAdmin';
+import { MdDeleteForever, MdEditRoad } from "react-icons/md";
 import './delivery.css'; 
 
 const DeliveryCost = () => {
@@ -55,7 +56,7 @@ const DeliveryCost = () => {
   return (
     <div>
       <AdminDashboard />
-      <h1>Costos de Delivery</h1>
+      
       <table className="deliveryTable">
         <thead>
           <tr>
@@ -95,9 +96,9 @@ const DeliveryCost = () => {
                 {editingZoneId === zone.id ? (
                   <button onClick={() => handleSave(zone.id)} className="deliveryBtnSave">Guardar</button>
                 ) : (
-                  <button onClick={() => handleEdit(zone.id, zone.name, zone.cost)} className="deliveryBtnEdit">Editar</button>
+                  <button onClick={() => handleEdit(zone.id, zone.name, zone.cost)} className="deliveryBtnEdit"><MdEditRoad/></button>
                 )}
-                <button onClick={() => handleDelete(zone.id)} className="deliveryBtnDelete">Eliminar</button>
+                <button onClick={() => handleDelete(zone.id)} className="deliveryBtnDelete">< MdDeleteForever/></button>
               </td>
             </tr>
           ))}

@@ -80,8 +80,8 @@ const PlaceOrders = () => {
       console.log(`Estado del pedido ${orderId} actualizado a: ${newStatus}`);
 
       if (newStatus === 'Enviado') {
-        await updateStockOnOrder(orderId); // Llamamos a la función para restar el stock
-        printOrder(orderId); // Llamamos a la función para imprimir el pedido
+        await updateStockOnOrder(orderId); 
+        printOrder(orderId); 
       }
     } catch (error) {
       console.error("Error al actualizar el estado del pedido:", error);
@@ -96,11 +96,11 @@ const PlaceOrders = () => {
 
       if (order && order.items) {
         for (const item of order.items) {
-          const itemId = item.id;  // El ID del producto en stock
+          const itemId = item.id; 
           const itemQuantity = item.quantity;
 
           const stockDocRef = doc(db, 'Stock', itemId);
-          const stockSnapshot = await getDoc(stockDocRef);  // Cambié getDocs por getDoc aquí
+          const stockSnapshot = await getDoc(stockDocRef);  
           const stockData = stockSnapshot.data();
 
           if (stockData) {

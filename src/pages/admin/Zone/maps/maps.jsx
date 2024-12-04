@@ -54,7 +54,7 @@ const Maps = () => {
         { id: docRef.id, name: zoneName, shape: { type: shape.type, coordinates: flattenedCoordinates }, centroid, cost: 0 },
       ]);
 
-      console.log('Zona guardada en Firebase con ID:', docRef.id);
+    
     } catch (error) {
       console.error('Error al guardar la zona en Firebase:', error);
     }

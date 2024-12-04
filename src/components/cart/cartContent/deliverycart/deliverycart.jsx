@@ -17,7 +17,7 @@ const DeliveryForm = ({ deliveryOption, setDeliveryOption, address, setAddress, 
         ...doc.data(),
       }));
       setZones(zonesData);
-      console.log('Zonas de cobertura cargadas:', zonesData); // Depuración
+
     };
 
     fetchZones();
@@ -27,7 +27,7 @@ const DeliveryForm = ({ deliveryOption, setDeliveryOption, address, setAddress, 
     const pointFeature = turf.point([point.lng, point.lat]);
     const polygonFeature = turf.polygon([polygon.coordinates.map(coord => [coord.lng, coord.lat])]);
     const isInside = turf.booleanPointInPolygon(pointFeature, polygonFeature);
-    console.log('Verificación de punto en polígono:', isInside); // Depuración
+  
     return isInside;
   };
 
@@ -36,7 +36,7 @@ const DeliveryForm = ({ deliveryOption, setDeliveryOption, address, setAddress, 
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
       const coordinates = { lat: latLng.lat, lng: latLng.lng };
-      console.log('Coordenadas obtenidas:', coordinates); // Depuración
+   
 
       for (const zone of zones) {
         if (isPointInPolygon(coordinates, zone.shape)) {

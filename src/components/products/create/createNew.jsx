@@ -11,31 +11,47 @@ const CreateNew = () => {
   const [category, setCategory] = useState("");
 
   const productsCollection = collection(db, 'productosmesa');
+  const productscolletionApp = collection(db, 'productos')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validación de campos
     if (!name || !description || !price || !category) {
       alert("Por favor, completa todos los campos antes de enviar.");
       return;
     }
-
-    // Agregar a Firestore si todos los campos están completos
-    await addDoc(productsCollection, {
-      name,
-      description,
-      price: Number(price),
-      category
-    });
-
-    // Resetear campos
-    setName("");
-    setDescription("");
-    setPrice("");
-    setCategory("");
+  
+    try {
+      // Agregar a la colección 'productosmesa'
+      await addDoc(productsCollection, {
+        name,
+        description,
+        price: Number(price),
+        category
+      });
+  
+      // Agregar a la colección 'productos'
+      await addDoc(productscolletionApp, {
+        name,
+        description,
+        price: Number(price),
+        category
+      });
+  
+      // Resetear campos
+      setName("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+  
+      alert("Producto agregado a ambas colecciones correctamente.");
+    } catch (error) {
+      console.error("Error al agregar el producto:", error);
+      alert("Hubo un error al agregar el producto. Intenta nuevamente.");
+    }
   };
-    
+  
   return (
     <>
       <DashBoardAdmin />

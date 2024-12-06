@@ -139,49 +139,29 @@ const PlaceOrders = () => {
                 body {
                   font-family: Arial, sans-serif;
                   font-size: 12px;
-                  width: 58mm;
+                  width: 47mm;
                   margin: 0;
                   padding: 0;
+                  white-space: pre-wrap; /* Permite saltos de línea */
                 }
                 .order-header {
                   text-align: center;
                   margin-bottom: 10px;
                 }
-                .order-details {
-                  margin-bottom: 10px;
-                }
-                .order-items {
-                  margin-bottom: 10px;
-                }
-                .order-items table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                .order-items th, .order-items td {
-                  border: 1px solid #ddd;
-                  padding: 4px;
-                  text-align: left;
-                }
-                .order-items th {
-                  background-color: #f2f2f2;
-                }
-                .order-total, .order-delivery {
-                  text-align: right;
-                }
                 .centered {
                   text-align: center;
                 }
-                .logo {
-                  display: block;
-                  margin: 0 auto;
-                  width: 50px; /* Ajusta el tamaño según sea necesario */
-                  height: auto;
+                .order-details, .order-items, .order-total, .order-delivery {
+                  margin-bottom: 10px;
+                }
+                .order-items p {
+                  margin: 0; /* Elimina márgenes innecesarios */
                 }
               </style>
             </head>
             <body>
               <div class="order-header">
-                <img src="../../../assets/LOGO EN ROJO.png" alt="El Galponcito" class="logo" />
+                <h3>El Galponcito</h3>
               </div>
               <div class="order-details">
                 <p><strong>Cliente:</strong> ${order.userName}</p>
@@ -190,30 +170,18 @@ const PlaceOrders = () => {
               </div>
               <div class="order-items">
                 <h3 class="centered">Productos:</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
-                      <th>Precio</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${order.items.map((item) => `
-                      <tr>
-                        <td>${item.category === "1/2 y 1/2" ? `${item.half1.name} y ${item.half2.name}` : item.name}</td>
-                        <td>${item.quantity}</td>
-                        <td>${item.totalPrice || item.price}</td>
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
+                ${order.items.map((item) => `
+                  ${item.category === "1/2 y 1/2" 
+                    ? `${item.half1.name} y ${item.half2.name}` 
+                    : item.name} 
+                  x${item.quantity} - $${item.totalPrice || item.price}\n
+                `).join('')}
               </div>
               <div class="order-delivery">
-                <p><strong>Costo de Envío:</strong> ${order.deliveryCost ? order.deliveryCost : '0'}</p>
+                <p><strong>Costo de Envío:</strong> $${order.deliveryCost || '0'}</p>
               </div>
               <div class="order-total">
-                <p><strong>Total:</strong> ${order.totalAmount}</p>
+                <p><strong>Total:</strong> $${order.totalAmount}</p>
               </div>
             </body>
           </html>

@@ -42,7 +42,7 @@ const PlaceOrders = () => {
           const orderHour = orderDate.getHours();
           const orderDay = orderDate.toLocaleDateString();
 
-          const isInBusinessHours = (orderHour >= 10 && orderHour < 24) || (orderHour < 2);
+          const isInBusinessHours = (orderHour >= 09 && orderHour < 24) || (orderHour < 2);
           const isToday = orderDay === new Date().toLocaleDateString();
 
           return isToday && isInBusinessHours;

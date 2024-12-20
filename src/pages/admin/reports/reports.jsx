@@ -6,7 +6,7 @@ import DashboardAdmin from '../dashboard/DashboardAdmin';
 const Reports = () => {
   const [orders, setOrders] = useState([]);
   const [salesData, setSalesData] = useState({});
-  const [reportType, setReportType] = useState('daily'); // Puede ser 'daily', 'weekly', o 'monthly'
+  const [reportType, setReportType] = useState('daily'); 
 
   // Cargar los pedidos desde Firebase
   useEffect(() => {

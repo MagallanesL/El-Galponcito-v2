@@ -1,18 +1,15 @@
-
 .deliveryForm {
   text-align: center;
   margin-top: 20px;
 }
-
 
 .deliveryOptionsInput {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin: 20px 0;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
-
 
 .deliveryOptionButton {
   padding: 10px 20px;
@@ -24,7 +21,6 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-
 .deliveryOptionButton.active {
   background-color: #4caf50;
   color: #fff;
@@ -32,11 +28,9 @@
   transform: scale(1.05);
 }
 
-
 .deliveryOptionButton:hover {
   background-color: #e0f7e9;
 }
-
 
 .addressInput {
   margin-top: 15px;
@@ -47,7 +41,6 @@
   border-radius: 8px;
 }
 
-
 .addressInput input {
   width: 100%;
   padding: 8px;
@@ -57,48 +50,117 @@
   border-radius: 5px;
 }
 
+/* Estilos para los botones de hora */
+.hourSelection {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.hourSelectionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.selectedHourText {
+  width: 100%;
+  text-align: center;
+}
+
+.selectedHourText span {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.hourSelection button {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.hourSelection button:hover {
+  background-color: #e0f7e9;
+}
+
+.hourSelection button.active {
+  background-color: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+  transform: scale(1.05);
+}
+
+.hourSelectionInput {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
 
 @media (max-width: 768px) {
   .deliveryForm {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
 
   .deliveryOptionsInput {
-    gap: 10px; 
-    justify-content: space-around; 
+    gap: 10px;
+    justify-content: space-around;
   }
 
   .deliveryOptionButton {
-    font-size: 0.9rem; 
-    padding: 8px 15px; 
+    font-size: 0.9rem;
+    padding: 8px 15px;
   }
 
   .addressInput {
-    padding: 8px; 
+    padding: 8px;
   }
 
   .addressInput input {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
+  }
+
+  .hourSelection button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .hourSelectionInput {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .deliveryOptionsInput {
-    flex-direction: column; 
-    gap: 10px; 
+    flex-direction: column;
+    gap: 10px;
   }
 
   .deliveryOptionButton {
-    font-size: 0.8rem; 
-    padding: 6px 12px; 
+    font-size: 0.8rem;
+    padding: 6px 12px;
   }
 
   .addressInput {
-    margin-top: 10px; 
-    padding: 6px; 
+    margin-top: 10px;
+    padding: 6px;
   }
 
   .addressInput input {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
+  }
+
+  .hourSelection button {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+  }
+
+  .hourSelectionInput {
+    font-size: 0.7rem;
   }
 }

@@ -42,7 +42,7 @@ const PlaceOrders = () => {
           const orderHour = orderDate.getHours();
           const orderDay = orderDate.toLocaleDateString();
 
-          const isInBusinessHours = (orderHour >= 09 && orderHour < 24) || (orderHour < 2);
+          const isInBusinessHours = (orderHour >= 9 && orderHour < 24) || (orderHour < 2);
           const isToday = orderDay === new Date().toLocaleDateString();
 
           return isToday && isInBusinessHours;
@@ -80,8 +80,8 @@ const PlaceOrders = () => {
       console.log(`Estado del pedido ${orderId} actualizado a: ${newStatus}`);
 
       if (newStatus === 'Enviado') {
-        await updateStockOnOrder(orderId); 
-        printOrder(orderId); 
+        await updateStockOnOrder(orderId);
+        printOrder(orderId);
       }
     } catch (error) {
       console.error("Error al actualizar el estado del pedido:", error);
@@ -96,11 +96,11 @@ const PlaceOrders = () => {
 
       if (order && order.items) {
         for (const item of order.items) {
-          const itemId = item.id; 
+          const itemId = item.id;
           const itemQuantity = item.quantity;
 
           const stockDocRef = doc(db, 'Stock', itemId);
-          const stockSnapshot = await getDoc(stockDocRef);  
+          const stockSnapshot = await getDoc(stockDocRef);
           const stockData = stockSnapshot.data();
 
           if (stockData) {
@@ -128,7 +128,7 @@ const PlaceOrders = () => {
       const orderDocRef = doc(db, 'Pedidos', orderId);
       const orderSnapshot = await getDoc(orderDocRef);
       const order = orderSnapshot.data();
-  
+
       if (order) {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
@@ -171,10 +171,10 @@ const PlaceOrders = () => {
               <div class="order-items">
                 <h3 class="centered">Productos:</h3>
                 ${order.items.map((item) => `
-                  ${item.category === "1/2 y 1/2" 
-                    ? `${item.half1.name} y ${item.half2.name}` 
-                    : item.name} 
-                  x${item.quantity} - $${item.totalPrice || item.price}\n
+                  <p>${item.category === "1/2 y 1/2"
+                    ? `${item.half1.name} y ${item.half2.name}`
+                    : item.name}
+                  x${item.quantity} - $${item.totalPrice || item.price}</p>
                 `).join('')}
               </div>
               <div class="order-delivery">
@@ -193,8 +193,6 @@ const PlaceOrders = () => {
       console.error("Error al imprimir el pedido:", error);
     }
   };
-  
-  
 
   const handleStatusChange = (orderId, newStatus) => {
     setFilteredOrders((prevOrders) =>

@@ -9,6 +9,7 @@ import CartSummary from "./cartSumary/cartSumary";
 import DeliveryForm from "./deliverycart/deliverycart";
 import PaymentForm from "./paymentform/paymentForm";
 import CartEmpty from "./cartEmpty/cartEmpty";
+import ObsOrder from "./ObsOrder/index";
 import './cartcontent.css';
 
 const CartContent = () => {
@@ -20,7 +21,9 @@ const CartContent = () => {
   const [address, setAddress] = useState("");
   const [methodPayment, setMethodPayment] = useState("efectivo");
   const [isAddressValid, setIsAddressValid] = useState(true);
-  const [deliveryCost, setDeliveryCost] = useState(0); // Inicializa deliveryCost en 0
+  const [deliveryCost, setDeliveryCost] = useState(0);
+  const [obsOrder, setObsOrder] = useState("");
+  const [selectedHour, setSelectedHour] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,9 +43,9 @@ const CartContent = () => {
     const calculateTotal = () => {
       const totalAmount = cartItems.reduce((acc, item) => {
         if (item.category === "1/2 y 1/2") {
-          return acc + (item.totalPrice * item.quantity);
+          return acc + item.totalPrice * item.quantity;
         } else {
-          return acc + (item.price * item.quantity);
+          return acc + item.price * item.quantity;
         }
       }, 0);
       setTotal(totalAmount);
@@ -75,18 +78,30 @@ const CartContent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedHour || selectedHour === "") {
+      Swal.fire({
+        title: "¡Ups! La hora no ha sido seleccionada 😔",
+        text: "Por favor, selecciona una hora para la entrega.",
+        icon: "error",
+        confirmButtonText: "¡Entendido!",
+      });
+      return;
+    }
+
     const order = {
       userId: user.uid,
       userName: userData.nombre,
       userEmail: userData.email,
       userPhone: userData.telefono,
       items: cartItems,
-      totalAmount: total + deliveryCost, // Incluye el deliveryCost en el total
+      totalAmount: total + deliveryCost,
       deliveryOption: deliveryOption,
       address: address,
       methodPayment: methodPayment,
       timestamp: new Date().toISOString(),
-      deliveryCost: deliveryCost // Incluye el deliveryCost en el objeto order
+      deliveryCost: deliveryCost,
+      obs: obsOrder,
+      selectedHour: selectedHour,
     };
 
     const orderRef = doc(db, "Pedidos", user.uid + "_" + new Date().toISOString());
@@ -96,9 +111,9 @@ const CartContent = () => {
       updateCart([]);
       Swal.fire({
         title: "¡Pedido Confirmado! 🎉",
-        text: "¡Gracias por elegirnos, tu pizza está en camino! 🍕🍕\nNos vemos pronto en el galpón más delicioso de la ciudad!",
+        text: "¡Gracias por elegirnos, tu pedido está en camino!",
         icon: "success",
-        confirmButtonText: "¡Genial! 🍕",
+        confirmButtonText: "¡Genial!",
       }).then(() => {
         navigate("/clients");
       });
@@ -107,14 +122,13 @@ const CartContent = () => {
         title: "¡Ups! Algo salió mal 😔",
         text: "Parece que hubo un error al enviar tu pedido. Por favor, intenta de nuevo.",
         icon: "error",
-        confirmButtonText: "¡Lo intentaré de nuevo! 🔄"
+        confirmButtonText: "¡Lo intentaré de nuevo!",
       });
     }
   };
 
   if (!userData) return <p>Estamos cargando tus datos... ¡un momento! ⏳</p>;
 
-  // Si el carrito está vacío, renderiza CartEmpty
   if (cartItems.length === 0) {
     return <CartEmpty />;
   }
@@ -137,12 +151,24 @@ const CartContent = () => {
           isAddressValid={isAddressValid}
           setIsAddressValid={setIsAddressValid}
           setDeliveryCost={setDeliveryCost}
+          selectedHour={selectedHour}
+          setSelectedHour={setSelectedHour}
         />
         <PaymentForm
           methodPayment={methodPayment}
           setMethodPayment={setMethodPayment}
         />
-        <button onClick={handleSubmit}>Confirmar Pedido</button>
+        <div className="observations">
+          <textarea
+            id="obsOrder"
+            placeholder="¿Alguna preferencia especial para tu pedido?"
+            value={obsOrder}
+            onChange={(e) => setObsOrder(e.target.value)}
+          />
+        </div>
+        <button onClick={handleSubmit} disabled={!cartItems.length || !isAddressValid || !selectedHour}>
+          Confirmar Pedido
+        </button>
       </div>
     </div>
   );

@@ -1,0 +1,68 @@
+/* Estilo general para el contenedor */
+.obsOrder {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center; /* Alinea el contenido al centro para mayor simetría */
+  }
+  
+  /* Estilo para el label */
+  .obsOrder label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    align-self: flex-start; /* Alinea el label al inicio */
+  }
+  
+  /* Estilo para el textarea */
+  .obsOrder textarea {
+    width: 80%; /* Cambia el ancho a un porcentaje más grande */
+    max-width: 800px; /* Ancho máximo para pantallas grandes */
+    min-height: 80px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* Permite redimensionar solo verticalmente */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo de enfoque (focus) */
+  .obsOrder textarea:focus {
+    outline: none;
+    border-color: #007BFF; /* Color azul claro para indicar selección */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Estilo responsivo */
+  @media (max-width: 768px) {
+    .obsOrder {
+      padding: 0.5rem;
+    }
+  
+    .obsOrder label {
+      font-size: 0.9rem;
+    }
+  
+    .obsOrder textarea {
+      width: 90%; /* Aumenta el ancho para pantallas medianas */
+      font-size: 0.9rem;
+      min-height: 60px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .obsOrder label {
+      font-size: 0.85rem;
+    }
+  
+    .obsOrder textarea {
+      width: 95%; /* Máximo ancho para pantallas pequeñas */
+      font-size: 0.85rem;
+      padding: 0.4rem;
+    }
+  }
+  

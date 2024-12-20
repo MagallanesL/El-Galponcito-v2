@@ -76,7 +76,7 @@ const Stock = () => {
       const remainingStock = totalStock - totalSold;
 
       // Mostrar alert si el stock restante es menor o igual a 10
-      if (remainingStock <= 10) {
+      if (remainingStock <= 30) {
         Swal.fire({
           title: 'Atención',
           text: `Quedan ${remainingStock} unidades en stock.`,

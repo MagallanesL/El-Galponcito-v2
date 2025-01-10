@@ -122,59 +122,101 @@ const PlaceOrders = () => {
       console.error("Error al actualizar el stock:", error);
     }
   };
-
   const printOrder = async (orderId) => {
     try {
       const orderDocRef = doc(db, 'Pedidos', orderId);
       const orderSnapshot = await getDoc(orderDocRef);
       const order = orderSnapshot.data();
-
+  
       if (order) {
         const printWindow = window.open('', '_blank');
-        printWindow.document.write(`
+        const clientName = order.userName === 'elgalponcito' ? order.nameClient : order.userName;
+  
+        // Crear un iframe oculto
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+  
+        // Inyectar el contenido HTML en el iframe
+        iframe.contentDocument.write(`
           <html>
             <head>
-              <title>El Galponcito</title>
+              <title>.</title>
               <style>
                 body {
                   font-family: Arial, sans-serif;
                   font-size: 12px;
-                  width: 47mm;
+                  width: 80mm;
                   margin: 0;
                   padding: 0;
-                  white-space: pre-wrap; /* Permite saltos de línea */
+                  white-space: pre-wrap;
+                  line-height: 0.3; /* Ajusta el interlineado */
                 }
                 .order-header {
                   text-align: center;
                   margin-bottom: 10px;
+                  line-height: 0.3;
                 }
                 .centered {
                   text-align: center;
                 }
-                .order-details, .order-items, .order-total, .order-delivery {
-                  margin-bottom: 10px;
+                .order-details, .order-items, .order-total, .order-delivery, .order-observations {
+                  margin-bottom: 10px; /* Ajusta el margen inferior */
                 }
                 .order-items p {
-                  margin: 0; /* Elimina márgenes innecesarios */
+                  margin: 0;
+                  line-height: 0.3; /* Ajusta el interlineado */
+                }
+                .product-item {
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 5px; /* Ajusta el margen inferior */
+                }
+                .product-item span {
+                  margin-right: 5px;
+                }
+                @page {
+                  margin: 0;
+                }
+                @media print {
+                  footer {
+                    position: fixed;
+                    bottom: 0;
+                    width: 100%;
+                    text-align: center;
+                    font-size: 10px;
+                    margin-top: 10px; /* Ajusta el margen superior */
+                  }
                 }
               </style>
             </head>
             <body>
               <div class="order-header">
-                <h3>El Galponcito</h3>
+                <h2>El Galponcito</h2>
+                <p>Gracias por elegirnos</p>
               </div>
               <div class="order-details">
-                <p><strong>Cliente:</strong> ${order.userName}</p>
+                <p><strong>Cliente:</strong> ${order.nameClient}</p>
                 <p><strong>Teléfono:</strong> ${order.userPhone}</p>
                 <p><strong>Dirección:</strong> ${order.address ? order.address.split(',')[0] : 'Retira en local'}</p>
               </div>
+              ${order.obs ? `
+                <div class="order-observations">
+                  <p>La quiero ${order.selectedHour}</p>
+                  <p><strong>Observaciones:</strong> ${order.obs}</p>
+                </div>
+              ` : ''}
               <div class="order-items">
                 <h3 class="centered">Productos:</h3>
                 ${order.items.map((item) => `
-                  <p>${item.category === "1/2 y 1/2"
-                    ? `${item.half1.name} y ${item.half2.name}`
-                    : item.name}
-                  x${item.quantity} - $${item.totalPrice || item.price}</p>
+                  <div class="product-item">
+                    <span>${item.category === "1/2 y 1/2"
+                      ? `${item.half1.name} y ${item.half2.name}`
+                      : item.name}
+                      <br/>
+                    x ${item.quantity}</span>
+                    <span> $${item.totalPrice || item.price}</span>
+                  </div>
                 `).join('')}
               </div>
               <div class="order-delivery">
@@ -183,16 +225,29 @@ const PlaceOrders = () => {
               <div class="order-total">
                 <p><strong>Total:</strong> $${order.totalAmount}</p>
               </div>
+              <footer>
+                <p>www.elgalponcito.com.ar</p>
+              </footer>
             </body>
           </html>
         `);
-        printWindow.document.close();
-        printWindow.print();
+  
+        // Imprimir el contenido del iframe
+        iframe.contentWindow.print();
+  
+        // Eliminar el iframe después de la impresión
+        iframe.onafterprint = () => {
+          document.body.removeChild(iframe);
+        };
       }
     } catch (error) {
       console.error("Error al imprimir el pedido:", error);
     }
   };
+  
+  
+  
+  
 
   const handleStatusChange = (orderId, newStatus) => {
     setFilteredOrders((prevOrders) =>

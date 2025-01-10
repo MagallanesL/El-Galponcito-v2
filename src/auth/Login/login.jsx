@@ -11,6 +11,7 @@ import styles from './css/Login.module.css';
 import { PiEyesFill } from "react-icons/pi";
 import { TbEyeOff } from "react-icons/tb";
 import { AuthContext } from "../../context/authcontext";
+import Swal from 'sweetalert2';
 
 const auth = getAuth();
 
@@ -40,7 +41,7 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const userEmail = userCredential.user.email;
 
-      const userRef = doc(db, "Usuarios", userCredential.user.uid); 
+      const userRef = doc(db, "Usuarios", userCredential.user.uid);
       const userSnap = await getDoc(userRef);
 
       if (userSnap.exists()) {
@@ -76,6 +77,13 @@ const Login = () => {
       return;
     }
 
+    // Validación de la contraseña
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("La contraseña debe tener al menos 7 caracteres, letras y números.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -88,15 +96,23 @@ const Login = () => {
         createdAt: new Date(),
       });
 
-      login({
-        email: user.email,
-        nombre,
-        telefono,
-        direccion,
+      // Mostrar alerta de bienvenida
+      Swal.fire({
+        title: '¡Bienvenido al Galponcito!',
+        text: 'Tu registro ha sido exitoso.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        // Limpiar los campos
+        setNombre('');
+        setTelefono('');
+        setDireccion('');
+        setEmail('');
+        setPassword('');
+        setError(null);
+        navigate('/clients');
       });
 
-      setError(null);
-      navigate('/login');
     } catch (err) {
       setError('Error al registrarse, intente nuevamente.');
     }
@@ -107,7 +123,7 @@ const Login = () => {
       <div className={styles.loginForm}>
         <h1>{isRegister ? 'Registro' : 'Iniciar Sesión'}</h1>
         <ErrorMessage error={error} className={styles.errorMessage} />
-        
+
         {isRegister && (
           <>
             <InputField name="nombre" value={nombre} onChange={handleInputChange} placeholder="Nombre o Apodo" className={styles.inputField} />
@@ -115,31 +131,31 @@ const Login = () => {
             <InputField name="direccion" value={direccion} onChange={handleInputChange} placeholder="Dirección" className={styles.inputField} />
           </>
         )}
-        
+
         <InputField name="email" value={email} onChange={handleInputChange} placeholder="Correo" type="email" className={styles.inputField} />
-        
+
         <div className={styles.passwordContainer}>
           <div className={styles.passwordInputWrapper}>
-            <InputField 
-              name="password" 
-              value={password} 
-              onChange={handleInputChange} 
-              placeholder="Contraseña" 
-              type={passwordVisible ? 'text' : 'password'} 
-              className={styles.inputField} 
+            <InputField
+              name="password"
+              value={password}
+              onChange={handleInputChange}
+              placeholder="7 caracteres Letras y Numeros"
+              type={passwordVisible ? 'text' : 'password'}
+              className={styles.inputField}
             />
-            <button 
-              type="button" 
-              className={styles.togglePasswordButton} 
+            <button
+              type="button"
+              className={styles.togglePasswordButton}
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
               {passwordVisible ?  <PiEyesFill /> : <TbEyeOff /> }
             </button>
           </div>
         </div>
-        
+
         <AuthButton onClick={isRegister ? handleRegister : handleLogin} text={isRegister ? 'Registrarse' : 'Iniciar Sesión'} className={styles.authButton} />
-        
+
         <ToggleButton onClick={() => setIsRegister(!isRegister)} text={isRegister ? '¿Ya tienes cuenta? ¡Inicia sesión!' : '¿No tienes cuenta? Regístrate gratis!'} className={styles.toggleButton} />
       </div>
     </div>

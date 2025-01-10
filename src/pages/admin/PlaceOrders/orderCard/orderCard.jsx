@@ -25,6 +25,7 @@ const OrderCard = ({ order, handleStatusChange, getStatusClass }) => {
           {order.orderNumber} # Pedido de: <strong>{order.userName}</strong> - Total: ${order.totalAmount}
         </Accordion.Header>
         <Accordion.Body>
+          <h3>Cliente : {order.nameClient}</h3>
           <p><strong>Teléfono:</strong> {order.userPhone}</p>
           <p><strong>Dirección:</strong> {order.address ? order.address.split(',')[0] : 'Retira en local'}</p>
 

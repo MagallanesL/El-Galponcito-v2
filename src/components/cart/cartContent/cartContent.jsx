@@ -24,6 +24,7 @@ const CartContent = () => {
   const [deliveryCost, setDeliveryCost] = useState(0);
   const [obsOrder, setObsOrder] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
+  const [nameClient, setNameClient] = useState(""); // Estado para el nombre del cliente
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,16 +79,6 @@ const CartContent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedHour || selectedHour === "") {
-      Swal.fire({
-        title: "¡Ups! La hora no ha sido seleccionada 😔",
-        text: "Por favor, selecciona una hora para la entrega.",
-        icon: "error",
-        confirmButtonText: "¡Entendido!",
-      });
-      return;
-    }
-
     const order = {
       userId: user.uid,
       userName: userData.nombre,
@@ -101,7 +92,8 @@ const CartContent = () => {
       timestamp: new Date().toISOString(),
       deliveryCost: deliveryCost,
       obs: obsOrder,
-      selectedHour: selectedHour,
+      selectedHour: selectedHour || "Cuando este listo", // Si no se selecciona una hora, se establece como "No especificado"
+      nameClient: user.email === 'admin@elgalponcito.com' ? nameClient : userData.nombre, // Incluir el nombre del cliente si es admin
     };
 
     const orderRef = doc(db, "Pedidos", user.uid + "_" + new Date().toISOString());
@@ -111,7 +103,7 @@ const CartContent = () => {
       updateCart([]);
       Swal.fire({
         title: "¡Pedido Confirmado! 🎉",
-        text: "¡Gracias por elegirnos, tu pedido está en camino!",
+        text: "¡Gracias por elegirnos, Vamos a preparar tu pedido!",
         icon: "success",
         confirmButtonText: "¡Genial!",
       }).then(() => {
@@ -158,6 +150,17 @@ const CartContent = () => {
           methodPayment={methodPayment}
           setMethodPayment={setMethodPayment}
         />
+        {user.email === 'admin@elgalponcito.com' && (
+          <div className="admin-name-client">
+            <label htmlFor="nameClient">Nombre del Cliente:</label>
+            <input
+              type="text"
+              id="nameClient"
+              value={nameClient}
+              onChange={(e) => setNameClient(e.target.value)}
+            />
+          </div>
+        )}
         <div className="observations">
           <textarea
             id="obsOrder"
@@ -166,7 +169,7 @@ const CartContent = () => {
             onChange={(e) => setObsOrder(e.target.value)}
           />
         </div>
-        <button onClick={handleSubmit} disabled={!cartItems.length || !isAddressValid || !selectedHour}>
+        <button onClick={handleSubmit} disabled={!cartItems.length || !isAddressValid}>
           Confirmar Pedido
         </button>
       </div>
